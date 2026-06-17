@@ -13,10 +13,13 @@ public class Shooter : MonoBehaviour
 
     void Fire()
     {
+        // 캐릭터가 보는 방향 감지
+        float direction = transform.localScale.x > 0 ? 1f : -1f;
+
         // 총알 생성 (내 위치에서 생성)
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 
-        // 총알 초기화 (데미지 10, 관통 0, 오른쪽으로 발사)
-        bullet.GetComponent<Bullet>().InitBullet(10f, 0, Vector3.right);
+       // 방향에 맞게 발사
+        bullet.GetComponent<Bullet>().InitBullet(10f, 0, new Vector3(direction, 0, 0));
     }
 }
