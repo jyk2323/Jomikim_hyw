@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 5e9b8601e112c3f4a9d87d189d2a8e2a
+guid: 47231d759b3637d49a6502ca7081fc6f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4711884522431004601
-    second: KARIN_front_0
+      213: -7790062187624056635
+    second: KARIN_left-Sheet_0
+  - first:
+      213: 307587976486563823
+    second: KARIN_left-Sheet_1
+  - first:
+      213: -5872043581161640364
+    second: KARIN_left-Sheet_2
+  - first:
+      213: -338731824824143364
+    second: KARIN_left-Sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,12 +122,34 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: KARIN_front_0
+      name: KARIN_left-Sheet_0
       rect:
         serializedVersion: 2
-        x: 159
-        y: 129
+        x: 169
+        y: 119
         width: 482
+        height: 1142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c83770c6b324e390800000000000000
+      internalID: -7790062187624056635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KARIN_left-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 119
+        width: 492
         height: 1132
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +159,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9bf392e220af36140800000000000000
-      internalID: 4711884522431004601
+      spriteID: fefa9ab82a5c44400800000000000000
+      internalID: 307587976486563823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KARIN_left-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 1769
+        y: 119
+        width: 482
+        height: 1142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45e6f3f697f428ea0800000000000000
+      internalID: -5872043581161640364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KARIN_left-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 2549
+        y: 119
+        width: 502
+        height: 1132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf1bc3333359c4bf0800000000000000
+      internalID: -338731824824143364
       vertices: []
       indices: 
       edges: []
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      KARIN_front_0: 4711884522431004601
+      KARIN_left-Sheet_0: -7790062187624056635
+      KARIN_left-Sheet_1: 307587976486563823
+      KARIN_left-Sheet_2: -5872043581161640364
+      KARIN_left-Sheet_3: -338731824824143364
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

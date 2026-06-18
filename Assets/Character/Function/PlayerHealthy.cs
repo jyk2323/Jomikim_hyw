@@ -2,20 +2,21 @@ using UnityEngine;
 using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
-{   public static PlayerHealth instance; 
+{   
+    public static PlayerHealth instance; 
     public float maxHp = 100f;
     public float currentHp;
 
-    public Sprite frontSprite;  // 앞모습
-    public Sprite backSprite;   // 뒷모습 (피격시)
-
-    private SpriteRenderer spriteRenderer;
+    void Awake()
+    {   
+        instance = this; 
+        DontDestroyOnLoad(gameObject);
+        currentHp = maxHp;
+    }
 
     void Start()
     {
         currentHp = maxHp;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = frontSprite;
     }
 
     public void TakeDamage(float damage)
@@ -25,7 +26,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHp <= 0)
         {
-            spriteRenderer.sprite = backSprite; // 죽으면 뒷모습 고정
             Debug.Log("사망!");
         }
         else
@@ -36,16 +36,8 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator HitEffect()
     {
-        spriteRenderer.sprite = backSprite;         // 뒷모습으로
-        yield return new WaitForSeconds(0.3f);      // 0.3초 후
-        spriteRenderer.sprite = frontSprite;        // 다시 앞모습
-    }
-
-    void Awake()
-    {   instance = this; 
-        DontDestroyOnLoad(gameObject);
-        currentHp = maxHp;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = frontSprite;
+        // 스프라이트 변경 코드는 삭제됨
+        // 나중에 깜빡임 효과 등 다른 피격 효과를 넣으려면 이곳에 코드를 추가하세요.
+        yield return new WaitForSeconds(0.3f);      // 0.3초 대기
     }
 }
