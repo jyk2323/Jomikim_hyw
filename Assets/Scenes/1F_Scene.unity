@@ -5140,8 +5140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0dfb17fdc4d1849aef36eabcc02ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  nextSceneName: 2F_Scene
-  spawnPoint: {x: -5, y: 7}
+  nextSceneName: 2F_Hallway
+  spawnPoint: {x: 0, y: 0}
 --- !u!1 &973328690
 GameObject:
   m_ObjectHideFlags: 0
