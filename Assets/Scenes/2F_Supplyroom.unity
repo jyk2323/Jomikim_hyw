@@ -655,7 +655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChange
   nextSceneName: 2F_Office
-  spawnPoint: {x: -15.07, y: 15.93}
+  spawnPoint: {x: -9.24, y: 14.91}
 --- !u!212 &1327194377
 SpriteRenderer:
   serializedVersion: 2

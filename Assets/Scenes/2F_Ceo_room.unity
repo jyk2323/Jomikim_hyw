@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChange
   nextSceneName: 2F_Office
-  spawnPoint: {x: 0, y: 0}
+  spawnPoint: {x: 9.21, y: 7.92}
 --- !u!61 &86855725
 BoxCollider2D:
   m_ObjectHideFlags: 0
