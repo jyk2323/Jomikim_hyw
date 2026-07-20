@@ -1,17 +1,20 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    public string nextSceneName; // 이동할 씬 이름
-    public Vector2 spawnPoint; // 이동 후 캐릭터 위치
+    public string nextSceneName;
+    public Vector2 spawnPoint;
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player"))
             return;
 
-        PlayerHealth.instance.transform.position = spawnPoint;    
-        SceneManager.LoadScene(nextSceneName);
+        // 이 두 줄을 지우고
+        // PlayerHealth.instance.transform.position = spawnPoint;    
+        // SceneManager.LoadScene(nextSceneName);
+
+        // 이걸로 교체!
+        FadeManager.instance.LoadScene(nextSceneName, spawnPoint);
     }
 }

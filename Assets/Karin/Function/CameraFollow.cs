@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -7,6 +8,16 @@ public class CameraFollow : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded; // 씬 로드될 때마다 실행!
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬 바뀔 때마다 KARIN 다시 찾아서 연결!
+        if (PlayerHealth.instance != null)
+        {
+            target = PlayerHealth.instance.transform;
+        }
     }
 
     void Update()
