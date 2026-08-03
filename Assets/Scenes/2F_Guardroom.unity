@@ -246,8 +246,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.21
+  m_Offset: {x: 0.07708439, y: 0.027407765}
+  m_Radius: 0.31449217
 --- !u!114 &26265289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,9 +260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3745cfc191cd10143965aa1b0d62ffe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  itemName: EMP_Bomb
+  itemName: EMP
   itemSprite: {fileID: 2105971728334930012, guid: a879e86b50f4e344fba163fb4282034e, type: 3}
-  popupUI: {fileID: 8286292101465832828, guid: 0d62ab0e31e595d4e8a1ab72162842ae, type: 3}
 --- !u!1 &169633656
 GameObject:
   m_ObjectHideFlags: 0
