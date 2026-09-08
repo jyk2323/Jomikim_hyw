@@ -21,6 +21,30 @@ EditorBuildSettings:
     path: Assets/Scenes/B1_Scene.unity
     guid: 967402a5d46eb1b458d50f5d63c537db
   - enabled: 1
+    path: Assets/Scenes/2F_Hallway.unity
+    guid: a4cf1e64f575e0246a526fdaf396f31a
+  - enabled: 1
+    path: Assets/Scenes/2F_Supplyroom.unity
+    guid: 81f8a5c36b88ae141b178d4e7f85fd51
+  - enabled: 0
+    path: Assets/Scenes/2F_.unity
+    guid: 0534b37e09420c5438255aeafe0a53e3
+  - enabled: 1
+    path: Assets/Scenes/2F_Guardroom.unity
+    guid: 7fa264a7a298888489bfcb701d524e24
+  - enabled: 1
+    path: Assets/Scenes/2F_Lab.unity
+    guid: 41ef9f3c0d2310143a3ba7e023248bdf
+  - enabled: 1
+    path: Assets/Scenes/2F_Meetingroom.unity
+    guid: 921a93cc365afc2469d24c02f643e635
+  - enabled: 1
+    path: Assets/Scenes/2F_Ceo_room.unity
+    guid: 409a1a55865eab1499c7e810011896b3
+  - enabled: 1
+    path: Assets/Scenes/ComputerUIScene.unity
+    guid: bcc4fa614241f44318a58670b5ade6f1
+  - enabled: 1
     path: Assets/Scenes/2F/2F_Hallway.unity
     guid: a4cf1e64f575e0246a526fdaf396f31a
   - enabled: 1
