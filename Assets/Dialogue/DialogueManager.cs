@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public TextMeshProUGUI nameText;
     public Image characterImage;
+    public System.Action OnDialogueEnd;
 
     public float typingSpeed = 0.05f;
 
@@ -105,6 +106,10 @@ public class DialogueManager : MonoBehaviour
             isDialogueActive = false;
             dialoguePanel.SetActive(false);
 
+            // 대사 끝나고 등록된 함수 호출!
+            OnDialogueEnd?.Invoke();
+            OnDialogueEnd = null;
+
             // 대사 끝나고 자동 획득!
             if (currentTrigger != null && currentTrigger.autoPickup)
             {
@@ -120,3 +125,4 @@ public class DialogueManager : MonoBehaviour
         }
     }
 }
+
