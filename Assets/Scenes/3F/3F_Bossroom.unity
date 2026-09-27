@@ -4665,12 +4665,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ErrorSequence
   errorPanels:
   - {fileID: 910828236}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  errorInterval: 0.5
+  - {fileID: 276502361}
+  - {fileID: 2023298710}
+  - {fileID: 634362574}
+  - {fileID: 1674448581}
+  - {fileID: 237815000}
+  - {fileID: 1502647138}
+  errorInterval: 0.1
   nextSceneName: Part1, 2
 --- !u!4 &1633446756
 Transform:
@@ -5001,7 +5002,7 @@ GameObject:
   - component: {fileID: 1698444707}
   - component: {fileID: 1698444706}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Rain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5052,8 +5053,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1344553523
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 148484822003126477, guid: c697b990fce70364cab4331ca376d155, type: 3}

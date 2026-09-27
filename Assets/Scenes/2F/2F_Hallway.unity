@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChange
   nextSceneName: 1F_Scene
-  spawnPoint: {x: -1.93, y: 2.33}
+  spawnPoint: {x: 2, y: 11}
 --- !u!212 &1752601126
 SpriteRenderer:
   serializedVersion: 2
