@@ -1,9 +1,13 @@
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2; // ← 추가
 
 public class PlayerMove : MonoBehaviour
 {
     [Header("이동 속도")]
     public float moveSpeed = 5f;
+
+    public bool canMove = true; // ← 추가: TutorialManager가 이 값을 제어
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -17,6 +21,14 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        // 이동 잠겨있으면 입력 자체를 안 받음
+        if (!canMove)
+        {
+            moveInput = Vector2.zero;
+            animator.SetInteger("Move", 0); // stop 애니메이션 고정
+            return;
+        }
+
         // 입력 받기
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
@@ -49,6 +61,13 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 이동 잠겨있으면 물리 이동도 즉시 정지
+        if (!canMove)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         // 유니티 6전용 이동 속도 처리
         rb.linearVelocity = moveInput.normalized * moveSpeed;
     }
