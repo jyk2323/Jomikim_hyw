@@ -4672,7 +4672,7 @@ MonoBehaviour:
   - {fileID: 237815000}
   - {fileID: 1502647138}
   errorInterval: 0.1
-  nextSceneName: Part1, 2
+  nextSceneName: Part1,2
 --- !u!4 &1633446756
 Transform:
   m_ObjectHideFlags: 0

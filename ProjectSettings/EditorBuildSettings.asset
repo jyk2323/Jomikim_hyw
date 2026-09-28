@@ -68,9 +68,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/3F/3F_Hallway.unity
     guid: d38bc08720bc3304ab225edf6b9455b3
-  - enabled: 0
-    path: Assets/Scenes/Part1, 2.unity
-    guid: 28c5bbd311405fe458f0d12e51196f09
   - enabled: 1
     path: Assets/Boss/Part1,2.unity
     guid: dd2d130040a4cc04a8bb0e95b7e57422

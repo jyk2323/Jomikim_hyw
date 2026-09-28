@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class BossPlayerHealth : MonoBehaviour
@@ -9,7 +8,7 @@ public class BossPlayerHealth : MonoBehaviour
     public int maxHp = 5;
     public int currentHp;
 
-    public TextMeshProUGUI hpText; // HP 표시 UI (선택사항)
+    public TextMeshProUGUI hpText; // 없어도 괜찮도록 수정!
 
     void Awake()
     {
@@ -32,6 +31,7 @@ public class BossPlayerHealth : MonoBehaviour
 
     void UpdateUI()
     {
+        // hpText 없어도 에러 안 나도록!
         if (hpText != null)
             hpText.text = "HP : " + currentHp;
     }

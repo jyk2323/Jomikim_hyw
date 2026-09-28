@@ -31,10 +31,18 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-            return;
+        if (!collision.CompareTag("Player")) return;
 
-        collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+        // 보스전 씬이면 BossPlayerHealth 사용!
+        if (BossPlayerHealth.instance != null)
+        {
+            BossPlayerHealth.instance.TakeDamage();
+        }
+        else
+        {
+            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+        }
+
         Destroy(gameObject);
     }
 }
