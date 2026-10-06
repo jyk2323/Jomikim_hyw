@@ -10,6 +10,9 @@ public class ErrorSequence : MonoBehaviour
 
     public string nextSceneName; // 보스전 씬 이름
 
+    [Header("보스전 씬에서 카린이 도착할 위치 (발사 지점과 떨어진 곳)")]
+    public Vector2 spawnPoint = new Vector2(0f, -3f);
+
     void Awake()
     {
         instance = this;
@@ -32,7 +35,7 @@ public class ErrorSequence : MonoBehaviour
         // 에러창 다 뜨면 잠깐 대기
         yield return new WaitForSeconds(1f);
 
-        // Fade Out 후 씬 이동!
-        FadeManager.instance.LoadScene(nextSceneName, Vector2.zero);
+        // Fade Out 후 씬 이동! (도착 위치를 spawnPoint로)
+        FadeManager.instance.LoadScene(nextSceneName, spawnPoint);
     }
 }

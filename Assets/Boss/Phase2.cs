@@ -18,13 +18,17 @@ public class Phase2 : MonoBehaviour
 
     public void StartPhase()
     {
+        StopPhase(); // 이전에 돌던 패턴이 있으면 먼저 멈춤 (중복 실행 방지)
         phaseCoroutine = StartCoroutine(PhaseRoutine());
     }
 
     public void StopPhase()
     {
         if (phaseCoroutine != null)
+        {
             StopCoroutine(phaseCoroutine);
+            phaseCoroutine = null;
+        }
     }
 
     IEnumerator PhaseRoutine()
