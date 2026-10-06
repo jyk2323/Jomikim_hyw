@@ -1,20 +1,37 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
     public string nextSceneName;
     public Vector2 spawnPoint;
 
+    private bool isChanging = false;
+
+    // void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (!collision.CompareTag("Player")) return;
+    //     if (isChanging) return;
+
+    //     isChanging = true;
+
+    //     // FadeManager에만 맡기기!
+    //     FadeManager.instance.LoadScene(nextSceneName, spawnPoint);
+    // }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-            return;
+        if (!collision.CompareTag("Player")) return;
+        if (isChanging) return;
 
-        // 이 두 줄을 지우고
-        // PlayerHealth.instance.transform.position = spawnPoint;    
-        // SceneManager.LoadScene(nextSceneName);
+        isChanging = true;
 
-        // 이걸로 교체!
-        FadeManager.instance.LoadScene(nextSceneName, spawnPoint);
+        Debug.Log("FadeManager: " + FadeManager.instance);
+        Debug.Log("nextSceneName: " + nextSceneName);
+
+        if (FadeManager.instance != null)
+            FadeManager.instance.LoadScene(nextSceneName, spawnPoint);
+        else
+            UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
     }
+    
 }

@@ -3,17 +3,25 @@ using System.Collections;
 
 public class Phase1 : MonoBehaviour
 {
-    public GameObject bulletPrefab;  // 기존 Bullet 프리팹
+    public GameObject bulletPrefab;
 
     [Header("발사 위치 (Inspector에서 조절!)")]
-    public Transform topCenter;      // 상단 중앙
-    public Transform bottomLeft;     // 하단 좌측
-    public Transform bottomRight;    // 하단 우측
+    public Transform topCenter;
+    public Transform bottomLeft;
+    public Transform bottomRight;
 
     [Header("총알 설정")]
-    public int bulletCount = 7;          // 총알 개수
-    public float bulletSpeed = 5f;       // 총알 속도
-    public float delayBetweenShots = 2f; // 발사 간격
+    public int bulletCount = 7;
+    public float bulletSpeed = 5f;
+    public float delayBetweenShots = 2f;
+
+    [Header("1차 끝나고 대사")]
+    public string speakerName;
+    public Sprite speakerImage;
+    public Sprite panelSprite;
+
+    [TextArea]
+    public string[] endLines; // Inspector에서 입력!
 
     private Coroutine phaseCoroutine;
 
@@ -30,27 +38,29 @@ public class Phase1 : MonoBehaviour
 
     IEnumerator PhaseRoutine()
     {
-        // 상단 중앙에서 발사
         FireSemiCircle(topCenter.position, Vector2.down);
         yield return new WaitForSeconds(delayBetweenShots);
 
-        // 하단 좌측에서 발사
         FireSemiCircle(bottomLeft.position, Vector2.up);
         yield return new WaitForSeconds(delayBetweenShots);
 
-        // 하단 우측에서 발사
         FireSemiCircle(bottomRight.position, Vector2.up);
         yield return new WaitForSeconds(delayBetweenShots);
 
-        // 1차 끝 → 대사 출력 후 2차로!
-        DialogueManager.instance.OnDialogueEnd = () => BossManager.instance.StartPhase2();
-        DialogueManager.instance.StartDialogue(
-            "카린", null, new string[] { "여기서 끝낼 순 없어!" }, true, null, null);
+        // 대사 있으면 출력 후 2차로, 없으면 바로 2차로!
+        if (endLines != null && endLines.Length > 0)
+        {
+            DialogueManager.instance.OnDialogueEnd = () => BossManager.instance.StartPhase2();
+            DialogueManager.instance.StartDialogue(speakerName, speakerImage, endLines, true, panelSprite, null);
+        }
+        else
+        {
+            BossManager.instance.StartPhase2();
+        }
     }
 
     void FireSemiCircle(Vector2 position, Vector2 baseDir)
     {
-        // 반원 방향으로 총알 발사!
         for (int i = 0; i < bulletCount; i++)
         {
             float angle = -90f + (180f / (bulletCount - 1)) * i;

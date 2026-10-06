@@ -55,7 +55,10 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
 
-        PlayerHealth.instance.transform.position = spawnPoint;
+        // PlayerHealth 있을 때만 위치 변경!
+        if (PlayerHealth.instance != null)
+            PlayerHealth.instance.transform.position = spawnPoint;
+
         SceneManager.LoadScene(sceneName);
 
         timer = 0f;

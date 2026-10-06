@@ -8084,7 +8084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChange
   nextSceneName: 2F_Hallway
-  spawnPoint: {x: 5, y: -1.07}
+  spawnPoint: {x: 4, y: -1.07}
 --- !u!61 &1698144353
 BoxCollider2D:
   m_ObjectHideFlags: 0

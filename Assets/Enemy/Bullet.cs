@@ -33,15 +33,11 @@ public class Bullet : MonoBehaviour
     {
         if (!collision.CompareTag("Player")) return;
 
-        // 보스전 씬이면 BossPlayerHealth 사용!
-        if (BossPlayerHealth.instance != null)
-        {
-            BossPlayerHealth.instance.TakeDamage();
-        }
+        // 보스전이면 보스 데미지, 아니면 일반 데미지!
+        if (BossManager.instance != null)
+            PlayerHealth.instance.TakeBossDamage();
         else
-        {
             collision.GetComponent<PlayerHealth>().TakeDamage(damage);
-        }
 
         Destroy(gameObject);
     }

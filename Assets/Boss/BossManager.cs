@@ -26,15 +26,9 @@ public class BossManager : MonoBehaviour
 
     public void StartPhase1()
     {
-        if (BossPlayerHealth.instance == null)
-        {
-            Debug.LogError("BossPlayerHealth가 없어요!");
-            return;
-        }
-
         currentPhase = 1;
         hitCount = 0;
-        BossPlayerHealth.instance.ResetHp();
+        PlayerHealth.instance.ResetBossHp(); // 수정!
         phase1.StartPhase();
     }
 
