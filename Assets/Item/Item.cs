@@ -9,6 +9,9 @@ public class Item : MonoBehaviour
 
     void Update()
     {
+        // 대사 중에는 줍기 불가
+        if (DialogueManager.instance != null && DialogueManager.instance.IsDialogueActive) return;
+
         if (playerNearby && Input.GetKeyDown(KeyCode.E))
         {
             PickupItem();

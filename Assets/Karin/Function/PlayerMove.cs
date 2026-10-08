@@ -19,10 +19,18 @@ public class PlayerMove : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    // 움직일 수 있는지: 튜토리얼 잠금(canMove)도 아니고, 대사 중도 아닐 때만
+    bool CanControl()
+    {
+        if (!canMove) return false;
+        if (DialogueManager.instance != null && DialogueManager.instance.IsDialogueActive) return false;
+        return true;
+    }
+
     void Update()
     {
-        // 이동 잠겨있으면 입력 자체를 안 받음
-        if (!canMove)
+        // 이동 잠겨있으면 입력 자체를 안 받음 (튜토리얼 또는 대사 중)
+        if (!CanControl())
         {
             moveInput = Vector2.zero;
             animator.SetInteger("Move", 0); // stop 애니메이션 고정
@@ -62,7 +70,7 @@ public class PlayerMove : MonoBehaviour
     void FixedUpdate()
     {
         // 이동 잠겨있으면 물리 이동도 즉시 정지
-        if (!canMove)
+        if (!CanControl())
         {
             rb.linearVelocity = Vector2.zero;
             return;

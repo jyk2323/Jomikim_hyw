@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 86222c6d1b930984ebc138a1921f73df
+guid: 71166fdf72d6c824fb2de2be39dec818
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8331779581869693106
-    second: robot_f2_back_0
-  - first:
-      213: 6072492203678121827
-    second: robot_f2_back_1
+      213: 5682281752145333396
+    second: Interact_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: robot_f2_back_0
+      name: Interact_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 42
-        height: 35
+        x: 0
+        y: 0
+        width: 80
+        height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,30 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b81234d26d60a370800000000000000
-      internalID: 8331779581869693106
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: robot_f2_back_1
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 36
-        width: 26
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 36f309d5c73d54450800000000000000
-      internalID: 6072492203678121827
+      spriteID: 49c8e46c5258bde40800000000000000
+      internalID: 5682281752145333396
       vertices: []
       indices: 
       edges: []
@@ -173,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      robot_f2_back_0: 8331779581869693106
-      robot_f2_back_1: 6072492203678121827
+      Interact_0: 5682281752145333396
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

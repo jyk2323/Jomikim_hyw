@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Phase2 : MonoBehaviour
 {
+    [Tooltip("BossBullet 프리팹을 연결하세요")]
     public GameObject bulletPrefab;
 
     [Header("발사 위치")]
@@ -11,6 +12,8 @@ public class Phase2 : MonoBehaviour
     [Header("총알 설정")]
     public int bulletCount = 10;
     public float bulletSpeed = 5f;
+    [Tooltip("총알이 사라지기까지 시간(초). 날아가는 거리 = 속도 × 이 값")]
+    public float bulletLifeTime = 3f;
     public float delayBetweenShots = 2f;
     public int repeatCount = 3; // 반복 횟수
 
@@ -57,7 +60,14 @@ public class Phase2 : MonoBehaviour
             );
 
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-            bullet.GetComponent<Bullet>().InitBullet(1f, 0, dir);
+            BossBullet bossBullet = bullet.GetComponent<BossBullet>();
+            if (bossBullet == null)
+            {
+                Debug.LogError("Bullet Prefab에 BossBullet 스크립트가 없어요! BossBullet 프리팹을 연결하세요.");
+                Destroy(bullet);
+                return;
+            }
+            bossBullet.Init(dir, bulletSpeed, bulletLifeTime);
         }
     }
 }

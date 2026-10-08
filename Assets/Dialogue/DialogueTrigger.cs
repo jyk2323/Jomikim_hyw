@@ -40,6 +40,9 @@ public class DialogueTrigger : MonoBehaviour
 
     public void OnInteractButtonClick()
     {
+        // 이미 대사 중이면 무시 (대사가 겹쳐서 시작되는 것 방지)
+        if (DialogueManager.instance.IsDialogueActive) return;
+
         interactCanvas.SetActive(false);
 
         if (!hasInteracted)

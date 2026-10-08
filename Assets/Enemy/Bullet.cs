@@ -1,43 +1,39 @@
 using UnityEngine;
 
+// 1층/2층 로봇 총알 (보스 총알은 Boss/BossBullet.cs)
 public class Bullet : MonoBehaviour
 {
     public float damage;
     public int per;
 
-    private Rigidbody2D rb;  // 이름 rb로 변경
+    private Rigidbody2D rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void InitBullet(float damage, int per, Vector3 dir)
+    // speed, lifeTime을 안 넣으면 속도 15, 5초 후 삭제
+    public void InitBullet(float damage, int per, Vector3 dir, float speed = 15f, float lifeTime = 5f)
     {
         this.damage = damage;
         this.per = per;
-        float bulletSpeed = 15f;
 
         if (per > -1)
         {
-            rb.linearVelocity = dir * bulletSpeed;
+            rb.linearVelocity = dir.normalized * speed;
         }
-    }
 
-    void Start()
-    {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, lifeTime);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
 
-        // 보스전이면 보스 데미지, 아니면 일반 데미지!
-        if (BossManager.instance != null)
-            PlayerHealth.instance.TakeBossDamage();
-        else
-            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+        PlayerHealth player = collision.GetComponent<PlayerHealth>();
+        if (player != null)
+            player.TakeDamage(damage);
 
         Destroy(gameObject);
     }

@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: 5fcc3482838c76c4eb6f25c3d47a9f6e
+guid: 12fb7314c54a6284588fe2433c6a6c1c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7613966837136003386
-    second: robot_f2_left_0
+      213: -4886909206684292263
+    second: robot_f2_back-Sheet_0
   - first:
-      213: 6804228046162518853
-    second: robot_f2_left_1
+      213: 8737054580639132476
+    second: robot_f2_back-Sheet_1
+  - first:
+      213: 1434280119845393035
+    second: robot_f2_back-Sheet_2
+  - first:
+      213: 3872688168659875835
+    second: robot_f2_back-Sheet_3
+  - first:
+      213: -5383215642480099786
+    second: robot_f2_back-Sheet_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -116,45 +125,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: robot_f2_left_0
+      name: robot_f2_back-Sheet_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 1
-        width: 32
-        height: 35
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ce67ec8081c55690800000000000000
-      internalID: -7613966837136003386
+      spriteID: 95b2ffde7f53e2cb0800000000000000
+      internalID: -4886909206684292263
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: robot_f2_left_1
+      name: robot_f2_back-Sheet_1
       rect:
         serializedVersion: 2
-        x: 12
-        y: 36
-        width: 24
-        height: 12
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 543644e8b597d6e50800000000000000
-      internalID: 6804228046162518853
+      spriteID: c3be136a9d0404970800000000000000
+      internalID: 8737054580639132476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: robot_f2_back-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b821acb7b2697e310800000000000000
+      internalID: 1434280119845393035
       vertices: []
       indices: 
       edges: []
@@ -163,7 +194,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1fab9c839eb10f840bfff166386be634
     internalID: 0
     vertices: []
     indices: 
@@ -171,10 +202,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      robot_f2_left_0: -7613966837136003386
-      robot_f2_left_1: 6804228046162518853
+      robot_f2_back-Sheet_0: -4886909206684292263
+      robot_f2_back-Sheet_1: 8737054580639132476
+      robot_f2_back-Sheet_2: 1434280119845393035
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

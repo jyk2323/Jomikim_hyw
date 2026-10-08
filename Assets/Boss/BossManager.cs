@@ -85,8 +85,8 @@ public class BossManager : MonoBehaviour
     // 화면에 남은 총알 전부 삭제
     void ClearBullets()
     {
-        Bullet[] bullets = FindObjectsByType<Bullet>(FindObjectsSortMode.None);
-        foreach (Bullet b in bullets)
+        BossBullet[] bullets = FindObjectsByType<BossBullet>(FindObjectsSortMode.None);
+        foreach (BossBullet b in bullets)
             Destroy(b.gameObject);
     }
 

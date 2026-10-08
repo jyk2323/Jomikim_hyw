@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: 2b186765ac4674f46a89665cbdf48d3b
+guid: afc3402f4a7d7594cb19e72724e860f6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1038235743837255606
-    second: robot_f2_front_0
+      213: -4295829875098217318
+    second: robot_f2_left-Sheet_0
   - first:
-      213: -2796105002327369195
-    second: robot_f2_front_1
+      213: 2738687093663796524
+    second: robot_f2_left-Sheet_1
+  - first:
+      213: 8709150417207669207
+    second: robot_f2_left-Sheet_2
+  - first:
+      213: 4508532044400001099
+    second: robot_f2_left-Sheet_3
+  - first:
+      213: 7905508789808633867
+    second: robot_f2_left-Sheet_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -116,45 +125,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: robot_f2_front_0
+      name: robot_f2_left-Sheet_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1
-        width: 42
-        height: 35
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a48877f77127791f0800000000000000
-      internalID: -1038235743837255606
+      spriteID: a9492472d752264c0800000000000000
+      internalID: -4295829875098217318
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: robot_f2_front_1
+      name: robot_f2_left-Sheet_1
       rect:
         serializedVersion: 2
-        x: 11
-        y: 36
-        width: 26
-        height: 12
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 51a9595905d3239d0800000000000000
-      internalID: -2796105002327369195
+      spriteID: c2d07c8c665c10620800000000000000
+      internalID: 2738687093663796524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: robot_f2_left-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d1bb11592e1dd870800000000000000
+      internalID: 8709150417207669207
       vertices: []
       indices: 
       edges: []
@@ -163,7 +194,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4a6d3981f660c214abb34293e1cffa74
     internalID: 0
     vertices: []
     indices: 
@@ -171,10 +202,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      robot_f2_front_0: -1038235743837255606
-      robot_f2_front_1: -2796105002327369195
+      robot_f2_left-Sheet_0: -4295829875098217318
+      robot_f2_left-Sheet_1: 2738687093663796524
+      robot_f2_left-Sheet_2: 8709150417207669207
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

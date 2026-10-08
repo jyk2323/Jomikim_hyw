@@ -323,10 +323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69aeba2a51c30984ba360c65e998f9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Phase2
-  bulletPrefab: {fileID: 3710358101850134680, guid: f3f27e045165d6940b3745aa375761f8, type: 3}
+  bulletPrefab: {fileID: 3710358101850134680, guid: 8c045a173b8b662409892113973a6fd9, type: 3}
   firePoint: {fileID: 1190650087}
   bulletCount: 10
   bulletSpeed: 5
+  bulletLifeTime: 3
   delayBetweenShots: 2
   repeatCount: 3
 --- !u!1 &527259243
@@ -561,12 +562,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f97238dd66fcf4eb320d62defedbb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Phase1
-  bulletPrefab: {fileID: 3710358101850134680, guid: f3f27e045165d6940b3745aa375761f8, type: 3}
+  bulletPrefab: {fileID: 3710358101850134680, guid: 8c045a173b8b662409892113973a6fd9, type: 3}
   topCenter: {fileID: 1236575800}
   bottomLeft: {fileID: 1290251225}
   bottomRight: {fileID: 1980868326}
   bulletCount: 7
   bulletSpeed: 5
+  bulletLifeTime: 3
   delayBetweenShots: 2
   speakerName: 
   speakerImage: {fileID: 0}

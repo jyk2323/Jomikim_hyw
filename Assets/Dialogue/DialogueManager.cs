@@ -19,6 +19,9 @@ public class DialogueManager : MonoBehaviour
     private string[] currentLines;
     private int currentIndex = 0;
     private bool isDialogueActive = false;
+
+    // 다른 스크립트가 "지금 대사 중인가?"를 확인할 때 사용
+    public bool IsDialogueActive => isDialogueActive;
     private bool isTyping = false;
     private bool useTypingEffect = true;
     private DialogueTrigger currentTrigger; // 대사 끝나고 획득할 사물!
@@ -125,4 +128,3 @@ public class DialogueManager : MonoBehaviour
         }
     }
 }
-
