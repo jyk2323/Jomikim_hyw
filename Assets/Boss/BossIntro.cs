@@ -3,12 +3,10 @@ using System.Collections;
 
 public class BossIntro : MonoBehaviour
 {
-    public string speakerName;
-    public Sprite speakerImage;
-    public Sprite panelSprite;
+    public Sprite panelSprite;   // 대사창 배경 (비우면 기본)
 
     [TextArea]
-    public string[] introLines;
+    public string[] introLines;  // 줄마다 맨 앞에 [이름]. 예) [레인] 드디어 만났군
 
     void Start()
     {
@@ -37,8 +35,7 @@ public class BossIntro : MonoBehaviour
         if (introLines != null && introLines.Length > 0)
         {
             DialogueManager.instance.OnDialogueEnd = StartErrorSequence;
-            DialogueManager.instance.StartDialogue(
-                speakerName, speakerImage, introLines, true, panelSprite, null);
+            DialogueManager.instance.StartDialogue(introLines, true, panelSprite, null);
         }
         else
         {

@@ -19,12 +19,10 @@ public class Phase1 : MonoBehaviour
     public float delayBetweenShots = 2f;
 
     [Header("1차 끝나고 대사")]
-    public string speakerName;
-    public Sprite speakerImage;
-    public Sprite panelSprite;
+    public Sprite panelSprite;   // 대사창 배경 (비우면 기본)
 
     [TextArea]
-    public string[] endLines; // Inspector에서 입력!
+    public string[] endLines;    // 줄마다 맨 앞에 [이름]. 예) [카린] 여기서 끝낼 순 없어!
 
     private Coroutine phaseCoroutine;
 
@@ -58,7 +56,7 @@ public class Phase1 : MonoBehaviour
         if (endLines != null && endLines.Length > 0)
         {
             DialogueManager.instance.OnDialogueEnd = () => BossManager.instance.StartPhase2();
-            DialogueManager.instance.StartDialogue(speakerName, speakerImage, endLines, true, panelSprite, null);
+            DialogueManager.instance.StartDialogue(endLines, true, panelSprite, null);
         }
         else
         {

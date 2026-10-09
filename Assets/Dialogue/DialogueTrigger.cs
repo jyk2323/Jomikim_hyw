@@ -2,19 +2,14 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public string speakerName;
-    public Sprite speakerImage;
-    public Sprite firstPanelSprite;
-
-    public string repeatSpeakerName;
-    public Sprite repeatSpeakerImage;
-    public Sprite repeatPanelSprite;
+    // 대사는 줄마다 맨 앞에 [이름]을 쓴다. 예) [카린] 여기 숨어볼까?
+    [TextArea]
+    public string[] firstLines;       // 처음 조사할 때 대사
+    public Sprite firstPanelSprite;   // 처음 대사창 배경 (비우면 기본)
 
     [TextArea]
-    public string[] firstLines;
-
-    [TextArea]
-    public string[] repeatLines;
+    public string[] repeatLines;      // 두 번째부터 대사 (비우면 대사 없음)
+    public Sprite repeatPanelSprite;  // 반복 대사창 배경 (비우면 기본)
 
     public GameObject interactCanvas;
 
@@ -48,12 +43,12 @@ public class DialogueTrigger : MonoBehaviour
         if (!hasInteracted)
         {
             hasInteracted = true;
-            DialogueManager.instance.StartDialogue(speakerName, speakerImage, firstLines, true, firstPanelSprite, autoPickup ? this : null);
+            DialogueManager.instance.StartDialogue(firstLines, true, firstPanelSprite, autoPickup ? this : null);
         }
         else
         {
             if (repeatLines == null || repeatLines.Length == 0) return;
-            DialogueManager.instance.StartDialogue(repeatSpeakerName, repeatSpeakerImage, repeatLines, false, repeatPanelSprite, null);
+            DialogueManager.instance.StartDialogue(repeatLines, false, repeatPanelSprite, null);
         }
     }
 }
