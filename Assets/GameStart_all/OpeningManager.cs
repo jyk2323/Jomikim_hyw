@@ -38,6 +38,7 @@ public class OpeningManager : MonoBehaviour
     private bool isTyping = false;
     private bool nextPressed = false;
     private bool isEnding = false;
+    private bool skipCut = false;
     private string currentLine = "";
 
     void Start()
@@ -57,8 +58,7 @@ public class OpeningManager : MonoBehaviour
 
         if (Input.GetKeyDown(skipKey))
         {
-            StopAllCoroutines();
-            StartCoroutine(EndOpening());
+            SkipOpening();
             return;
         }
 
@@ -75,6 +75,14 @@ public class OpeningManager : MonoBehaviour
                 nextPressed = true;
             }
         }
+    }
+
+    public void SkipOpening()
+    {
+        if (isEnding) return;
+        skipCut = true;
+        isTyping = false;     // 타이핑 중이면 멈추기
+        nextPressed = true;   // 입력 대기 중이면 풀어주기
     }
 
     IEnumerator PlayOpening()
@@ -104,21 +112,21 @@ public class OpeningManager : MonoBehaviour
 
             // 대사 있는 컷
             dialoguePanel.SetActive(true);
-            SetSpeaker(null); // 컷마다 이름칸 초기화
+            SetSpeaker(null);
+            skipCut = false;   // 새 컷 시작할 때 초기화
 
             foreach (string rawLine in cut.lines)
             {
-                // 규칙은 1층 대사창과 같음
-                // [이름] 대사 → 화자 변경 / [이름] 없음 → 앞 사람 계속 / [] → 내레이션
+                if (skipCut) break;   // 스킵 신호가 있으면 남은 대사 건너뛰기
+
                 string speaker;
                 string line = DialogueManager.ParseLine(rawLine, out speaker);
                 if (speaker != null) SetSpeaker(speaker);
 
                 yield return TypeLine(line);
 
-                // 다음 입력 기다리기
                 nextPressed = false;
-                while (!nextPressed) yield return null;
+                while (!nextPressed && !skipCut) yield return null;
             }
         }
 
