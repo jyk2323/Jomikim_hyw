@@ -17,6 +17,9 @@ public class Inventory : MonoBehaviour
     public float noticeDuration = 2f;     // 화면에 떠 있는 시간(초)
     public float fadeTime = 0.25f;        // 나타나고 사라지는 시간(초)
 
+    // 가진 아이템 이름 목록 (열쇠 확인, 중복 획득 방지용)
+    private List<string> ownedItems = new List<string>();
+
     private CanvasGroup noticeGroup;
     private Coroutine noticeRoutine;
 
@@ -52,11 +55,19 @@ public class Inventory : MonoBehaviour
     // 아이템 획득 (Item.cs의 E키 줍기, DialogueManager의 자동획득 둘 다 여기로 옴)
     public void AddItem(string itemName, Sprite itemSprite)
     {
+        ownedItems.Add(itemName);
+
         GameObject slot = Instantiate(itemSlotPrefab, slotParent);
         slot.transform.Find("ItemImage").GetComponent<Image>().sprite = itemSprite;
         slot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemName;
 
         ShowNotice(itemName);
+    }
+
+    // 이 아이템을 가지고 있나? (예: Inventory.instance.HasItem("간부실 열쇠"))
+    public bool HasItem(string itemName)
+    {
+        return ownedItems.Contains(itemName);
     }
 
     // ───────── 획득 안내창 ─────────
