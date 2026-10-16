@@ -2512,10 +2512,10 @@ GameObject:
   m_Component:
   - component: {fileID: 904289201}
   - component: {fileID: 904289200}
-  - component: {fileID: 904289202}
+  - component: {fileID: 904289204}
   - component: {fileID: 904289203}
   m_Layer: 0
-  m_Name: 2_Glass door (vertical)_1 (1)
+  m_Name: Ceoroom_door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2595,20 +2595,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 89975276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &904289202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904289199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c0dfb17fdc4d1849aef36eabcc02ce4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneChange
-  nextSceneName: 2F_Ceo_room
-  spawnPoint: {x: 8.79, y: 6.85}
 --- !u!61 &904289203
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2655,6 +2641,27 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.059619904, y: 0.37068176}
   m_EdgeRadius: 0
+--- !u!114 &904289204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904289199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5509c51bd1221f849be6dd914887dd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockedDoor
+  nextSceneName: 2F_Ceo_room
+  spawnPoint: {x: 8.79, y: 6.85}
+  requiredItem: "\uAC04\uBD80\uC2E4 \uD0A4"
+  useRange: 1.5
+  consumeItem: 1
+  lockedLines:
+  - "[\uCE74\uB9B0] \uC5F4\uC1E0\uAC00 \uD544\uC694\uD560 \uAC83 \uAC19\uC544"
+  unlockLines:
+  - "[\uCE74\uB9B0] \uC557 \uC5F4\uB838\uB2E4!"
 --- !u!1 &904510246
 GameObject:
   m_ObjectHideFlags: 0

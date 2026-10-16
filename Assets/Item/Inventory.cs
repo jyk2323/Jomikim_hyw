@@ -20,6 +20,17 @@ public class Inventory : MonoBehaviour
     // 가진 아이템 이름 목록 (열쇠 확인, 중복 획득 방지용)
     private List<string> ownedItems = new List<string>();
 
+    // 아이템 이름 → 인벤토리 칸 (사용/삭제용)
+    private Dictionary<string, GameObject> slots = new Dictionary<string, GameObject>();
+
+    // 지금 "사용하기" 상태인 칸
+    private string selectedItem = null;
+    private string selectedOriginalText = "";
+
+    [Header("아이템 사용")]
+    public string useButtonText = "사용하기";
+    public string cannotUseText = "여기서는 사용할 수 없어요";
+
     private CanvasGroup noticeGroup;
     private Coroutine noticeRoutine;
 
@@ -50,6 +61,13 @@ public class Inventory : MonoBehaviour
     {
         bool isOpen = inventoryPanel.activeSelf;
         inventoryPanel.SetActive(!isOpen);
+        ClearSelection(); // 열거나 닫을 때 "사용하기" 상태 풀기
+    }
+
+    public void CloseInventory()
+    {
+        inventoryPanel.SetActive(false);
+        ClearSelection();
     }
 
     // 아이템 획득 (Item.cs의 E키 줍기, DialogueManager의 자동획득 둘 다 여기로 옴)
@@ -61,7 +79,75 @@ public class Inventory : MonoBehaviour
         slot.transform.Find("ItemImage").GetComponent<Image>().sprite = itemSprite;
         slot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemName;
 
-        ShowNotice(itemName);
+        // 칸을 누를 수 있게 버튼으로
+        Button btn = slot.GetComponent<Button>();
+        if (btn == null) btn = slot.AddComponent<Button>();
+        btn.onClick.AddListener(() => OnSlotClicked(itemName));
+        slots[itemName] = slot;
+
+        ShowMessage(itemName + AddParticle(itemName) + " 획득했어요");
+    }
+
+    // 아이템 없애기 (열쇠를 쓰고 나면 등)
+    public void RemoveItem(string itemName)
+    {
+        if (selectedItem == itemName) selectedItem = null;
+        ownedItems.Remove(itemName);
+
+        if (slots.TryGetValue(itemName, out GameObject slot))
+        {
+            Destroy(slot);
+            slots.Remove(itemName);
+        }
+    }
+
+    // ───────── 아이템 사용 ─────────
+    // 1번 클릭: 칸이 "사용하기"로 바뀜 / 2번 클릭: 사용 시도
+    void OnSlotClicked(string itemName)
+    {
+        if (selectedItem == itemName)
+        {
+            UseItem(itemName);
+            return;
+        }
+
+        ClearSelection();
+        selectedItem = itemName;
+
+        TextMeshProUGUI txt = GetSlotText(itemName);
+        if (txt != null)
+        {
+            selectedOriginalText = txt.text;
+            txt.text = useButtonText;
+        }
+    }
+
+    void UseItem(string itemName)
+    {
+        ClearSelection();
+
+        // 근처에 이 아이템을 쓸 수 있는 곳(문 등)이 있으면 사용
+        if (LockedDoor.TryUseItem(itemName))
+            return;
+
+        ShowMessage(cannotUseText);
+    }
+
+    void ClearSelection()
+    {
+        if (selectedItem != null)
+        {
+            TextMeshProUGUI txt = GetSlotText(selectedItem);
+            if (txt != null) txt.text = selectedOriginalText;
+        }
+        selectedItem = null;
+    }
+
+    TextMeshProUGUI GetSlotText(string itemName)
+    {
+        if (!slots.TryGetValue(itemName, out GameObject slot) || slot == null) return null;
+        Transform t = slot.transform.Find("ItemName");
+        return t != null ? t.GetComponent<TextMeshProUGUI>() : null;
     }
 
     // 이 아이템을 가지고 있나? (예: Inventory.instance.HasItem("간부실 열쇠"))
@@ -70,9 +156,9 @@ public class Inventory : MonoBehaviour
         return ownedItems.Contains(itemName);
     }
 
-    // ───────── 획득 안내창 ─────────
+    // ───────── 안내창 (획득, 사용 불가 등) ─────────
 
-    void ShowNotice(string itemName)
+    public void ShowMessage(string message)
     {
         if (noticePanel == null) return; // 안내창을 연결 안 했으면 그냥 넘어감
 
@@ -80,13 +166,13 @@ public class Inventory : MonoBehaviour
         if (noticeRoutine != null)
             StopCoroutine(noticeRoutine);
 
-        noticeRoutine = StartCoroutine(NoticeRoutine(itemName));
+        noticeRoutine = StartCoroutine(NoticeRoutine(message));
     }
 
-    IEnumerator NoticeRoutine(string itemName)
+    IEnumerator NoticeRoutine(string message)
     {
         if (noticeText != null)
-            noticeText.text = itemName + AddParticle(itemName) + " 획득했어요";
+            noticeText.text = message;
 
         noticePanel.SetActive(true);
 
