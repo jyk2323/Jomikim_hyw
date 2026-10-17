@@ -1,38 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
+using System;
 
-// 오프닝 씬 전용: 사진(컷)을 차례로 보여주고, 각 컷마다 대사창으로 스토리 전달
-// 마지막 컷이 끝나면 1층 씬으로 이동
-// (1층의 DialogueManager와는 따로 동작함 — 오프닝 씬에는 DialogueManager를 넣지 말 것)
 public class OpeningManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class Cut
-    {
-        public Sprite image;              // 이 컷에 보여줄 사진
-        [TextArea(2, 5)]
-        public string[] lines;            // 대사들. 줄 맨 앞에 [이름], 내레이션은 []
-        public float autoNextTime = 2f;   // 대사가 없을 때 몇 초 뒤 다음 컷으로
-    }
+    [Header("컷 데이터 에셋 (연결하면 아래 Cuts보다 우선)")]
+    public CutsceneData cutsceneData;
 
     [Header("컷 목록 (위에서부터 순서대로)")]
-    public Cut[] cuts;
+    public CutsceneData.Cut[] cuts;
 
     [Header("UI 연결")]
-    public Image cutImage;                // 화면 전체 사진
-    public GameObject dialoguePanel;      // 대사창
-    public TextMeshProUGUI nameText;      // 이름
-    public TextMeshProUGUI dialogueText;  // 대사
-    public Image fadeImage;               // 화면 전체 검은 이미지 (컷 전환 페이드용, 없어도 됨)
+    public Image cutImage;
+    public GameObject dialoguePanel;
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI dialogueText;
+    public Image fadeImage;
+
+    [Header("주요 인물 얼굴 (여기 등록된 이름만 얼굴이 나옴)")]
+    public Image characterImage;
+    public DialogueManager.Speaker[] speakers;
 
     [Header("설정")]
-    public float typingSpeed = 0.05f;     // 글자 나오는 속도
-    public float fadeTime = 0.5f;         // 컷 바뀔 때 어두워지는 시간
-    public KeyCode nextKey = KeyCode.Space;
-    public KeyCode skipKey = KeyCode.Escape; // 오프닝 전체 건너뛰기
+    public float typingSpeed = 0.05f;
+    public float fadeTime = 0.5f;
+    //public Key nextKey = Key.Space;
+    //public Key skipKey = Key.Escape;
     public string nextSceneName = "1F_Scene";
 
     private bool isTyping = false;
@@ -41,13 +38,47 @@ public class OpeningManager : MonoBehaviour
     private bool skipCut = false;
     private string currentLine = "";
 
+    CutsceneData.Cut[] GetCuts()
+    {
+        if (cutsceneData != null && cutsceneData.cuts != null && cutsceneData.cuts.Length > 0)
+            return cutsceneData.cuts;
+        return cuts != null ? cuts : new CutsceneData.Cut[0];
+    }
+
+#if UNITY_EDITOR
+    // 컴포넌트 우클릭 메뉴에서 실행: 현재 Cuts를 에셋 파일로 복사
+    [ContextMenu("Cuts를 Cutscene Data 에셋으로 복사")]
+    void CopyCutsToAsset()
+    {
+        if (cutsceneData == null || cuts == null)
+        {
+            Debug.LogWarning("Cutscene Data 칸에 에셋을 먼저 연결하세요.");
+            return;
+        }
+        var copy = new CutsceneData.Cut[cuts.Length];
+        for (int i = 0; i < cuts.Length; i++)
+        {
+            copy[i] = new CutsceneData.Cut
+            {
+                image = cuts[i].image,
+                lines = cuts[i].lines != null ? (string[])cuts[i].lines.Clone() : null,
+                autoNextTime = cuts[i].autoNextTime
+            };
+        }
+        cutsceneData.cuts = copy;
+        UnityEditor.EditorUtility.SetDirty(cutsceneData);
+        UnityEditor.AssetDatabase.SaveAssets();
+        Debug.Log("컷 " + copy.Length + "개를 에셋으로 복사했습니다.");
+    }
+#endif
+
     void Start()
     {
         dialoguePanel.SetActive(false);
         if (fadeImage != null)
         {
             fadeImage.raycastTarget = false;
-            SetFade(1f); // 처음엔 검은 화면에서 시작
+            SetFade(1f);
         }
         StartCoroutine(PlayOpening());
     }
@@ -56,17 +87,17 @@ public class OpeningManager : MonoBehaviour
     {
         if (isEnding) return;
 
-        if (Input.GetKeyDown(skipKey))
+        // Esc: 오프닝 전체 건너뛰기
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             SkipOpening();
             return;
         }
 
-        if (Input.GetKeyDown(nextKey) || Input.GetMouseButtonDown(0))
+        if (DialogueInput.NextPressed())
         {
             if (isTyping)
             {
-                // 타이핑 중이면 문장 한 번에 다 보여주기
                 isTyping = false;
                 dialogueText.text = currentLine;
             }
@@ -81,17 +112,18 @@ public class OpeningManager : MonoBehaviour
     {
         if (isEnding) return;
         skipCut = true;
-        isTyping = false;     // 타이핑 중이면 멈추기
-        nextPressed = true;   // 입력 대기 중이면 풀어주기
+        isTyping = false;
+        nextPressed = true;
     }
 
     IEnumerator PlayOpening()
     {
-        for (int c = 0; c < cuts.Length; c++)
-        {
-            Cut cut = cuts[c];
+        CutsceneData.Cut[] activeCuts = GetCuts();
 
-            // 컷 전환: 어둡게 → 사진 교체 → 밝게
+        for (int c = 0; c < activeCuts.Length; c++)
+        {
+            CutsceneData.Cut cut = activeCuts[c];
+
             if (c > 0) yield return Fade(0f, 1f);
             dialoguePanel.SetActive(false);
             if (cutImage != null) cutImage.sprite = cut.image;
@@ -99,7 +131,6 @@ public class OpeningManager : MonoBehaviour
 
             if (cut.lines == null || cut.lines.Length == 0)
             {
-                // 대사 없는 컷: 잠시 보여주고 넘어감 (Space로 빨리 넘기기 가능)
                 nextPressed = false;
                 float t = 0f;
                 while (t < cut.autoNextTime && !nextPressed)
@@ -110,14 +141,13 @@ public class OpeningManager : MonoBehaviour
                 continue;
             }
 
-            // 대사 있는 컷
             dialoguePanel.SetActive(true);
             SetSpeaker(null);
-            skipCut = false;   // 새 컷 시작할 때 초기화
+            skipCut = false;
 
             foreach (string rawLine in cut.lines)
             {
-                if (skipCut) break;   // 스킵 신호가 있으면 남은 대사 건너뛰기
+                if (skipCut) break;
 
                 string speaker;
                 string line = DialogueManager.ParseLine(rawLine, out speaker);
@@ -135,9 +165,34 @@ public class OpeningManager : MonoBehaviour
 
     void SetSpeaker(string speakerName)
     {
-        bool hasName = !string.IsNullOrEmpty(speakerName) && speakerName.Trim('[', ']', ' ') != "";
+        string pureName = string.IsNullOrEmpty(speakerName) ? "" : speakerName.Trim('[', ']', ' ');
+        bool hasName = pureName != "";
+
         nameText.gameObject.SetActive(hasName);
         if (hasName) nameText.text = speakerName;
+
+        SetPortrait(pureName);
+    }
+
+    // 목록에 있는 주요 인물만 얼굴을 보여주고, 내레이션/NPC는 숨김
+    void SetPortrait(string pureName)
+    {
+        if (characterImage == null) return;
+
+        if (pureName != "" && speakers != null)
+        {
+            foreach (DialogueManager.Speaker s in speakers)
+            {
+                if (s.name == pureName && s.portrait != null)
+                {
+                    characterImage.sprite = s.portrait;
+                    characterImage.enabled = true;
+                    return;
+                }
+            }
+        }
+
+        characterImage.enabled = false;
     }
 
     IEnumerator TypeLine(string line)
@@ -148,7 +203,7 @@ public class OpeningManager : MonoBehaviour
 
         foreach (char ch in line)
         {
-            if (!isTyping) yield break; // 중간에 Space 누르면 Update에서 전체 표시
+            if (!isTyping) yield break;
             dialogueText.text += ch;
             yield return new WaitForSeconds(typingSpeed);
         }
@@ -163,7 +218,6 @@ public class OpeningManager : MonoBehaviour
         SceneManager.LoadScene(nextSceneName);
     }
 
-    // ───────── 페이드 ─────────
     IEnumerator Fade(float from, float to)
     {
         if (fadeImage == null) yield break;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class DialogueManager : MonoBehaviour
@@ -52,10 +53,13 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if (isDialogueActive && Input.GetKeyDown(KeyCode.Space))
+        if (!isDialogueActive) return;
+
+        if (DialogueInput.NextPressed())
         {
             if (isTyping)
             {
+                // 타이핑 중에 누르면 한 번에 다 보여줌
                 StopAllCoroutines();
                 dialogueText.text = currentText;
                 isTyping = false;
