@@ -358,8 +358,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1252,8 +1252,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1617,8 +1617,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3943,8 +3943,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4419,8 +4419,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4558,11 +4558,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 408d2caeec4015840a36745730e3c9e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossIntro
-  speakerName: "[\uB808\uC778]"
-  speakerImage: {fileID: 6871652802115074137, guid: 3520f1518e95ba542bfa0992f2268256, type: 3}
   panelSprite: {fileID: -7760104753429257297, guid: 1bd49787a20d38b428504122c716d484, type: 3}
   introLines:
-  - "\uB4DC\uB514\uC5B4 \uB9CC\uB0AC\uAD70"
+  - "[\uCE74\uB860] \uB4DC\uB514\uC5B4 \uB9CC\uB0AC\uAD70"
 --- !u!114 &1633446755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4585,6 +4583,7 @@ MonoBehaviour:
   - {fileID: 1502647138}
   errorInterval: 0.1
   nextSceneName: Part1,2
+  spawnPoint: {x: 0, y: -3}
 --- !u!4 &1633446756
 Transform:
   m_ObjectHideFlags: 0
@@ -4794,8 +4793,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5233,8 +5232,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 6821343344619960041, guid: 13240a7598837664f8303501aac4dcb8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
