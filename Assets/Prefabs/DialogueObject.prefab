@@ -163,6 +163,7 @@ MonoBehaviour:
   repeatPanelSprite: {fileID: 0}
   interactCanvas: {fileID: 4566121997974883207}
   autoStart: 1
+  playOnce: 0
   autoPickup: 0
   itemName: 
   itemSprite: {fileID: 0}
