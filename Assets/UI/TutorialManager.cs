@@ -14,8 +14,24 @@ public class TutorialManager : MonoBehaviour
 
     private bool waitingDialogueEnd = false;
 
+    // 튜토리얼은 게임당 한 번만 (1층에 다시 와도 안 뜸)
+    private static bool alreadyShown = false;
+
     private void Start()
     {
+        // 1층 씬에 놓인 카린은 두 번째부터 지워지므로, 실제로 따라다니는 카린을 사용
+        if (PlayerHealth.instance != null)
+            playerMove = PlayerHealth.instance.GetComponent<PlayerMove>();
+
+        if (alreadyShown)
+        {
+            tutorialPanel.SetActive(false);
+            tutorialPanelGroup.blocksRaycasts = false;
+            enabled = false;
+            return;
+        }
+
+        alreadyShown = true;
         tutorialPanel.SetActive(true);
         tutorialPanelGroup.blocksRaycasts = true;
         playerMove.canMove = false;
