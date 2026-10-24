@@ -127,6 +127,9 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
 
+        // 대사 중에는 안 맞음 (대사 전에 쏜 총알이 날아와도 하트 안 깎임)
+        if (DialogueManager.instance != null && DialogueManager.instance.IsDialogueActive) return;
+
         currentHp = Mathf.Max(0f, currentHp - damage);
         UpdateHearts();
 

@@ -25,6 +25,9 @@ public class Robot2F : MonoBehaviour
     public float bulletLifeTime = 5f;
     public float fireOffset = 0.5f; // 몸 중심에서 얼마나 떨어진 곳에서 총알이 나오는지
 
+    [Header("EMP로 멈췄을 때 색 (투명도 A도 조절 가능)")]
+    public Color stoppedColor = new Color(0.5f, 0.7f, 1f, 1f);
+
     [Header("현재 바라보는 방향 (확인용)")]
     public Dir facing = Dir.Down;
 
@@ -33,10 +36,12 @@ public class Robot2F : MonoBehaviour
     private int step = 1;           // 1 = 다음 지점, -1 = 이전 지점
     private float fireTimer = 0f;
     private float animTimer = 0f;
+    private Color normalColor = Color.white;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        if (sr != null) normalColor = sr.color;
 
         // 예전 방식(Scale X 뒤집기) 흔적 제거: 항상 양수로
         Vector3 s = transform.localScale;
@@ -54,6 +59,14 @@ public class Robot2F : MonoBehaviour
 
     void Update()
     {
+        // 대사 중 / EMP / 카린 사망 → 완전히 멈춤 (이동, 애니메이션, 발사 전부)
+        if (RobotStop.IsStopped)
+        {
+            if (sr != null) sr.color = RobotStop.ByEmp ? stoppedColor : normalColor;
+            return;
+        }
+        if (sr != null) sr.color = normalColor;
+
         Patrol();
         UpdateSprite();
         Shoot();
@@ -167,5 +180,33 @@ public class Robot2F : MonoBehaviour
         for (int i = 0; i < waypoints.Length - 1; i++)
             if (waypoints[i] != null && waypoints[i + 1] != null)
                 Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
+    }
+}
+
+// ───────── 로봇 정지 관리 (모든 로봇이 확인) ─────────
+// EMP를 쓰면 정해진 시간 동안, 대사 중이거나 카린이 죽었을 때는 항상 멈춤.
+// 시간은 게임 전체 기준이라, 다른 씬에서 EMP를 쓰고 바로 이동해도 남은 시간 동안 멈춰 있음.
+public static class RobotStop
+{
+    private static float stopUntil = 0f;
+
+    public static void StopFor(float seconds)
+    {
+        stopUntil = Mathf.Max(stopUntil, Time.time + seconds);
+    }
+
+    // EMP 때문에 멈춘 상태인지
+    public static bool ByEmp => Time.time < stopUntil;
+
+    // 로봇이 멈춰야 하는지
+    public static bool IsStopped
+    {
+        get
+        {
+            if (ByEmp) return true;
+            if (DialogueManager.instance != null && DialogueManager.instance.IsDialogueActive) return true;
+            if (PlayerHealth.instance != null && PlayerHealth.instance.IsDead) return true;
+            return false;
+        }
     }
 }

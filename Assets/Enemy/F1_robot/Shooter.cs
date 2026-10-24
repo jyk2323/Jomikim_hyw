@@ -13,6 +13,9 @@ public class Shooter : MonoBehaviour
 
     void Fire()
     {
+        // 대사 중 / EMP / 카린 사망이면 쏘지 않음
+        if (RobotStop.IsStopped) return;
+
         // 캐릭터가 보는 방향 감지
         float direction = transform.localScale.x > 0 ? 1f : -1f;
 

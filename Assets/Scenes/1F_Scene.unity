@@ -372,6 +372,9 @@ MonoBehaviour:
   fadeTime: 0.25
   useButtonText: "\uC0AC\uC6A9\uD558\uAE30"
   cannotUseText: "\uC5EC\uAE30\uC11C\uB294 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC5B4\uC694"
+  empItemName: EMP
+  empDuration: 5
+  consumeEmp: 1
 --- !u!114 &41873680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4084,6 +4087,7 @@ MonoBehaviour:
   pointA: {fileID: 1212727124}
   pointB: {fileID: 155651222}
   speed: 2
+  stoppedColor: {r: 0.5, g: 0.7, b: 1, a: 1}
 --- !u!1 &127662023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4451,7 +4455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &211649838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6033,7 +6037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2641041356196767058, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2994648921678926477, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6070,6 +6074,10 @@ PrefabInstance:
     - target: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_Name
       value: Skip_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6654177784972131084, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_Sprite
@@ -6500,7 +6508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &716209512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11484,6 +11492,7 @@ MonoBehaviour:
   pointA: {fileID: 1389680642}
   pointB: {fileID: 483597663}
   speed: 2
+  stoppedColor: {r: 0.5, g: 0.7, b: 1, a: 1}
 --- !u!95 &1661932100
 Animator:
   serializedVersion: 7
@@ -12675,6 +12684,10 @@ PrefabInstance:
     - target: {fileID: 3030521694351219647, guid: 6ce9967440ac44ad8a63d3bde0e943b9, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566121997974883207, guid: 6ce9967440ac44ad8a63d3bde0e943b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4585304209032595210, guid: 6ce9967440ac44ad8a63d3bde0e943b9, type: 3}
       propertyPath: repeatPanelSprite

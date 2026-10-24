@@ -31,6 +31,11 @@ public class Inventory : MonoBehaviour
     public string useButtonText = "사용하기";
     public string cannotUseText = "여기서는 사용할 수 없어요";
 
+    [Header("EMP (쓰면 로봇 정지)")]
+    public string empItemName = "EMP";          // 아이템 이름과 글자까지 같아야 함
+    public float empDuration = 5f;              // 멈추는 시간(초)
+    public bool consumeEmp = true;              // 쓰면 사라짐
+
     private CanvasGroup noticeGroup;
     private Coroutine noticeRoutine;
 
@@ -125,6 +130,16 @@ public class Inventory : MonoBehaviour
     void UseItem(string itemName)
     {
         ClearSelection();
+
+        // EMP: 어디서든 사용 가능 → 로봇 정지
+        if (itemName == empItemName)
+        {
+            RobotStop.StopFor(empDuration);
+            if (consumeEmp) RemoveItem(itemName);
+            CloseInventory();
+            ShowMessage("로봇이 " + empDuration + "초 동안 멈췄어요");
+            return;
+        }
 
         // 근처에 이 아이템을 쓸 수 있는 곳(문 등)이 있으면 사용
         if (LockedDoor.TryUseItem(itemName))

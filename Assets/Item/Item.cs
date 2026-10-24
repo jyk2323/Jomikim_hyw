@@ -1,11 +1,29 @@
 using UnityEngine;
+using System.Collections.Generic;
 
+// 바닥에 놓인 아이템: 근처에 가면 "E" 안내가 뜨고, E키를 누르면 획득
 public class Item : MonoBehaviour
 {
     public string itemName;
     public Sprite itemSprite;
 
+    [Header("근처에 가면 뜨는 안내 (예: E키 그림/글자)")]
+    public GameObject keyHint;
+
     private bool playerNearby = false;
+
+    // 이미 주운 아이템 기억 (방을 나갔다 와도 다시 생기지 않게)
+    private static HashSet<string> pickedItems = new HashSet<string>();
+    string PickKey => gameObject.scene.name + "/" + itemName;
+
+    void Start()
+    {
+        if (keyHint != null) keyHint.SetActive(false);
+
+        // 이미 주운 아이템이면 없애기
+        if (pickedItems.Contains(PickKey))
+            Destroy(gameObject);
+    }
 
     void Update()
     {
@@ -22,17 +40,19 @@ public class Item : MonoBehaviour
     {
         if (!collision.CompareTag("Player")) return;
         playerNearby = true;
-        Debug.Log("아이템 근처에 있음!");
+        if (keyHint != null) keyHint.SetActive(true);
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
         playerNearby = false;
+        if (keyHint != null) keyHint.SetActive(false);
     }
 
     void PickupItem()
     {
+        pickedItems.Add(PickKey);
         Inventory.instance.AddItem(itemName, itemSprite);
         Destroy(gameObject);
     }
