@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class BossManager : MonoBehaviour
 {
@@ -15,6 +16,15 @@ public class BossManager : MonoBehaviour
 
     [Header("재시작까지 기다리는 시간(초)")]
     public float restartDelay = 0.5f;
+
+    [Header("HP 표시 (이 씬의 Canvas 안 텍스트)")]
+    public TextMeshProUGUI hpText;
+    [Tooltip("체크: ♥♥♥♡♡ 하트로 / 해제: HP : 3 숫자로")]
+    public bool useHearts = true;
+
+    [Header("재시작 안내 (비워두면 안 띄움)")]
+    public TextMeshProUGUI restartText;   // 화면 가운데 큰 글자
+    public string restartMessage = "다시 시작!";
 
     private bool isRestarting = false;   // 재시작 대기 중인지
     private GameObject followCamera;     // 1층에서 따라온 카메라
@@ -35,6 +45,10 @@ public class BossManager : MonoBehaviour
 
     void Start()
     {
+        // 시작하자마자 HP 표시하고, 재시작 안내는 숨김 (1차 시작 전 대기 시간 동안 "New Text"가 보이지 않게)
+        UpdateHpText();
+        if (restartText != null) restartText.gameObject.SetActive(false);
+
         isRestarting = true;
         Invoke(nameof(StartPhase1), restartDelay);
     }
@@ -47,6 +61,9 @@ public class BossManager : MonoBehaviour
 
         if (PlayerHealth.instance != null)
             PlayerHealth.instance.ResetBossHp();
+
+        UpdateHpText();
+        if (restartText != null) restartText.gameObject.SetActive(false);
 
         phase1.StartPhase();
     }
@@ -65,6 +82,8 @@ public class BossManager : MonoBehaviour
         if (isRestarting) return; // 재시작 대기 중에는 맞아도 무시
 
         hitCount++;
+        UpdateHpText();
+
         if (hitCount >= maxHit)
             Restart();
     }
@@ -79,7 +98,27 @@ public class BossManager : MonoBehaviour
         phase2.StopPhase();
         ClearBullets();
 
+        // "다시 시작!" 안내 (재시작될 때 꺼짐)
+        if (restartText != null)
+        {
+            restartText.text = restartMessage;
+            restartText.gameObject.SetActive(true);
+        }
+
         Invoke(nameof(StartPhase1), restartDelay);
+    }
+
+    // 남은 HP = 최대 - 맞은 횟수
+    void UpdateHpText()
+    {
+        if (hpText == null) return;
+
+        int hp = Mathf.Max(0, maxHit - hitCount);
+
+        if (useHearts)
+            hpText.text = new string('♥', hp) + new string('♡', maxHit - hp);
+        else
+            hpText.text = "HP : " + hp;
     }
 
     // 화면에 남은 총알 전부 삭제

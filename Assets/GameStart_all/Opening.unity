@@ -249,15 +249,13 @@ MonoBehaviour:
   characterImage: {fileID: 733414219}
   speakers:
   - name: "\uCE74\uB9B0"
-    portrait: {fileID: -4817152456159266888, guid: a114d1362cdf6b64fabb718ce4573a68, type: 3}
+    portrait: {fileID: 609192213627623470, guid: e4668336f3ed810448c07262ee823535, type: 3}
   - name: "\uCE74\uB860"
-    portrait: {fileID: 4288386830182276032, guid: 926e6e2c9be6f8044a1bebff42ec84d1, type: 3}
+    portrait: {fileID: 1117206816252032339, guid: c9f082efd1a24f34ea2c3e57ab6d3ca1, type: 3}
   - name: "\uB808\uC778"
-    portrait: {fileID: 6871652802115074137, guid: 3520f1518e95ba542bfa0992f2268256, type: 3}
+    portrait: {fileID: -3978272887453804091, guid: c0c8b4e85e3685d49a6ccb2e66f171df, type: 3}
   typingSpeed: 0.08
   fadeTime: 0.5
-  nextKey: 32
-  skipKey: 27
   nextSceneName: 1F_Scene
 --- !u!4 &1456964037
 Transform:
@@ -659,6 +657,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 543812534901031302, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 543812534901031302, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 543812534901031302, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -492.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 543812534901031302, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1159019705531181514, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -743,6 +757,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2001881853574382234, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 899.5953
+      objectReference: {fileID: 0}
+    - target: {fileID: 2001881853574382234, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2001881853574382234, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2039791182379892283, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -169.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2039791182379892283, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 36.855
+      objectReference: {fileID: 0}
     - target: {fileID: 5704607183458152728, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: speakers.Array.size
       value: 3
@@ -762,6 +796,14 @@ PrefabInstance:
     - target: {fileID: 5704607183458152728, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: speakers.Array.data[4].portrait
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654177784972131084, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 609192213627623470, guid: e4668336f3ed810448c07262ee823535, type: 3}
+    - target: {fileID: 7941759317413154203, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8112907431110394103, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
