@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,6 +37,10 @@ public class ShrinkCircleController : MonoBehaviour
 
     [Header("입력 설정")]
     public KeyCode judgeKey = KeyCode.Space;
+
+    [Header("해킹 연동")]
+    [Tooltip("체크하면 판정 직후 HackingManager에 성공/실패를 알립니다. Manager 쪽에서 따로 알린다면 꺼두세요.")]
+    public bool reportToHacking = true;
 
     private RectTransform selfRect;
     private Image selfImage;
@@ -117,6 +122,13 @@ public class ShrinkCircleController : MonoBehaviour
         isJudged = true;
         isRunning = false;
         OnJudged?.Invoke(this, result);
+
+        // 해킹 연동: Perfect, Good은 성공 / Fail, Miss는 실패
+        if (reportToHacking)
+        {
+            bool success = (result == JudgeResult.Perfect || result == JudgeResult.Good);
+            HackingManager.Instance?.OnMinigameFinished(success);
+        }
 
         // 판정 후 살짝 보이는 시간을 두고 제거 (연출용, 필요 없으면 즉시 Destroy로 변경)
         Destroy(gameObject, 0.15f);

@@ -159,16 +159,19 @@ public class HorizontalBarMiniGame : MonoBehaviour
         {
             Debug.Log("크리티컬 성공!");
             onCriticalSuccess?.Invoke();
+            HackingManager.Instance?.OnMinigameFinished(true);    // ← 추가
         }
         else if (indicatorX >= targetMinX && indicatorX <= targetMaxX)
         {
             Debug.Log("성공!");
             onSuccess?.Invoke();
+            HackingManager.Instance?.OnMinigameFinished(true);    // ← 추가
         }
         else
         {
             Debug.Log("실패!");
             onFail?.Invoke();
+            HackingManager.Instance?.OnMinigameFinished(false);   // ← 추가
         }
     }
 }

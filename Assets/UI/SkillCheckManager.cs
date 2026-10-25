@@ -82,6 +82,8 @@ public class SkillCheckManager : MonoBehaviour
         bool inArc = IsAngleInRange(currentAngle, arcStartAngle, arcEnd);
         bool inHit = IsAngleInRange(currentAngle, hitStartAngle, hitEnd);
 
+        bool success = false;
+
         if (inHit)
         {
             Debug.Log("★ PERFECT! ★");
@@ -96,6 +98,9 @@ public class SkillCheckManager : MonoBehaviour
         }
 
         StopSkillCheck();
+
+        // ↓ 추가: 해킹 매니저에 결과 알리기
+        HackingManager.Instance?.OnMinigameFinished(success);
     }
 
     private bool IsAngleInRange(float angle, float start, float end)
