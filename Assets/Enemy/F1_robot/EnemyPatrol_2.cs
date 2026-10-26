@@ -8,13 +8,27 @@ public class EnemyPatrol : MonoBehaviour
 
     private Transform target; // 현재 목표 지점
 
+    public Color stoppedColor = new Color(0.5f, 0.7f, 1f, 1f); // EMP로 멈췄을 때 색
+    private SpriteRenderer sr;
+    private Color normalColor = Color.white;
+
     void Start()
     {
         target = pointB; // 처음엔 B쪽으로 이동 시작
+        sr = GetComponent<SpriteRenderer>();
+        if (sr != null) normalColor = sr.color;
     }
 
     void Update()
     {
+        // 대사 중 / EMP / 카린 사망이면 멈춤
+        if (RobotStop.IsStopped)
+        {
+            if (sr != null) sr.color = RobotStop.ByEmp ? stoppedColor : normalColor;
+            return;
+        }
+        if (sr != null) sr.color = normalColor;
+
         // 목표 지점으로 이동
         transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
