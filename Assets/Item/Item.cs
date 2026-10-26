@@ -6,6 +6,8 @@ public class Item : MonoBehaviour
 {
     public string itemName;
     public Sprite itemSprite;
+    [Tooltip("주우면 몇 개 들어오는지 (EMP 2번 쓰기 → 2)")]
+    public int amount = 1;
 
     [Header("근처에 가면 뜨는 안내 (예: E키 그림/글자)")]
     public GameObject keyHint;
@@ -53,7 +55,7 @@ public class Item : MonoBehaviour
     void PickupItem()
     {
         pickedItems.Add(PickKey);
-        Inventory.instance.AddItem(itemName, itemSprite);
+        Inventory.instance.AddItem(itemName, itemSprite, amount);
         Destroy(gameObject);
     }
 }

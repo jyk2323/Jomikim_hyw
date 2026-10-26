@@ -247,8 +247,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.08324945, y: 0.027407765}
-  m_Radius: 0.77071416
+  m_Offset: {x: 0.055211306, y: 0.027407765}
+  m_Radius: 0.51837134
 --- !u!114 &26265289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Item
   itemName: EMP
   itemSprite: {fileID: 2105971728334930012, guid: a879e86b50f4e344fba163fb4282034e, type: 3}
+  amount: 2
   keyHint: {fileID: 1472478313}
 --- !u!1 &169633656
 GameObject:
@@ -2121,15 +2122,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3713198804091631496, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.02
+      value: 0.018
       objectReference: {fileID: 0}
     - target: {fileID: 3713198804091631496, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.02
+      value: 0.018
       objectReference: {fileID: 0}
     - target: {fileID: 3713198804091631496, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.02
+      value: 0.018
       objectReference: {fileID: 0}
     - target: {fileID: 3713198804091631496, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
       propertyPath: m_LocalPosition.x

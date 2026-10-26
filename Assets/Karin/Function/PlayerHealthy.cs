@@ -137,6 +137,19 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(DeathRoutine());
     }
 
+    // ───────── 회복 ─────────
+    // 하트 n개만큼 회복. 실제로 회복했으면 true (이미 꽉 찼으면 false)
+    public bool HealHearts(int hearts)
+    {
+        if (isDead) return false;
+        if (currentHp >= maxHp) return false;
+
+        float perHeart = maxHp / maxHearts;
+        currentHp = Mathf.Min(maxHp, currentHp + perHeart * hearts);
+        UpdateHearts();
+        return true;
+    }
+
     // 하트 = 남은 HP를 하트 1개 크기로 나눈 값 (올림)
     void UpdateHearts()
     {
