@@ -57,5 +57,8 @@ TagManager:
   - name: Button
     uniqueID: 1623609125
     locked: 0
+  - name: Fence
+    uniqueID: 1434521831
+    locked: 0
   m_RenderingLayers:
   - Default

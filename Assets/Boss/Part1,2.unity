@@ -822,7 +822,7 @@ MonoBehaviour:
   mixedDelay: 4
   panelSprite: {fileID: -7760104753429257297, guid: 1bd49787a20d38b428504122c716d484, type: 3}
   endLines:
-  - "[\uCE74\uB860] \uD750\uD750\uD750 \uC774\uAC74 \uB9DB\uBCF4\uAE30\uC77C \uBFD0\uC774\uB77C\uACE0"
+  - "[\uB808\uC778] \uD558\uD558\uD558 \uC774\uAC74 \uB9DB\uBCF4\uAE30\uC77C \uBFD0\uC774\uB77C\uACE0"
 --- !u!1 &1190650086
 GameObject:
   m_ObjectHideFlags: 0
