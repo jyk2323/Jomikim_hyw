@@ -28,6 +28,10 @@ public class DialogueManager : MonoBehaviour
 
     public float typingSpeed = 0.05f;
 
+    [Header("스킵")]
+    public Button skipButton;          // 대사창의 SKIP 버튼 (없어도 됨)
+    public Key skipKey = Key.Escape;   // 키보드 스킵 키
+
     private string[] currentLines;
     private int currentIndex = 0;
     private bool isDialogueActive = false;
@@ -49,11 +53,18 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         dialoguePanel.SetActive(false);
+        if (skipButton != null)
+            skipButton.onClick.AddListener(SkipDialogue);
     }
 
     void Update()
     {
         if (!isDialogueActive) return;
+        if (Keyboard.current != null && Keyboard.current[skipKey].wasPressedThisFrame)
+        {
+            SkipDialogue();
+            return;
+        }
 
         if (DialogueInput.NextPressed())
         {
@@ -178,31 +189,83 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
     }
 
+    // 버튼과 키가 같이 쓰는 스킵 함수
+    public void SkipDialogue()
+    {
+        if (!isDialogueActive) return;
+
+        StopAllCoroutines();
+        isTyping = false;
+        EndDialogue();
+    }
+
     void NextLine()
     {
         currentIndex++;
 
         if (currentIndex >= currentLines.Length)
-        {
-            isDialogueActive = false;
-            dialoguePanel.SetActive(false);
-
-            // 대사 끝나고 등록된 함수 호출!
-            OnDialogueEnd?.Invoke();
-            OnDialogueEnd = null;
-
-            // 대사 끝나고 자동 획득!
-            if (currentTrigger != null && currentTrigger.autoPickup)
-            {
-                Inventory.instance.AddItem(currentTrigger.itemName, currentTrigger.itemSprite);
-                Destroy(currentTrigger.gameObject);
-            }
-
-            currentTrigger = null;
-        }
+            EndDialogue();
         else
-        {
             ShowLine(currentLines[currentIndex]);
-        }
     }
-}
+
+    void EndDialogue()
+    {
+        isDialogueActive = false;
+        dialoguePanel.SetActive(false);
+
+        OnDialogueEnd?.Invoke();
+        OnDialogueEnd = null;
+
+        if (currentTrigger != null && currentTrigger.autoPickup)
+        {
+            Inventory.instance.AddItem(currentTrigger.itemName, currentTrigger.itemSprite);
+            Destroy(currentTrigger.gameObject);
+        }
+
+        currentTrigger = null;
+    }
+}   // ← 클래스 닫는 중괄호 (이게 파일 맨 끝에 딱 하나만 있어야 해요)
+
+    //IEnumerator TypeLine(string line)
+    //{
+    //    isTyping = true;
+    //    dialogueText.text = "";
+
+    //    foreach (char c in line)
+    //    {
+    //        dialogueText.text += c;
+    //        yield return new WaitForSeconds(typingSpeed);
+    //    }
+
+    //    isTyping = false;
+    //}
+
+    //void NextLine()
+    //{
+    //    //currentIndex++;
+
+    //    //if (currentIndex >= currentLines.Length)
+    //    //{
+    //    //    isDialogueActive = false;
+    //    //    dialoguePanel.SetActive(false);
+
+    //    //    // 대사 끝나고 등록된 함수 호출!
+    //    //    OnDialogueEnd?.Invoke();
+    //    //    OnDialogueEnd = null;
+
+    //    //    // 대사 끝나고 자동 획득!
+    //    //    if (currentTrigger != null && currentTrigger.autoPickup)
+    //    //    {
+    //    //        Inventory.instance.AddItem(currentTrigger.itemName, currentTrigger.itemSprite);
+    //    //        Destroy(currentTrigger.gameObject);
+    //    //    }
+
+    //    //    currentTrigger = null;
+    //    //}
+    //    //else
+    //    //{
+    //    //    ShowLine(currentLines[currentIndex]);
+    //    //}
+//    }
+//}

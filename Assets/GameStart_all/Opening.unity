@@ -777,6 +777,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 36.855
       objectReference: {fileID: 0}
+    - target: {fileID: 2994648921678926477, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 522
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994648921678926477, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -194
+      objectReference: {fileID: 0}
     - target: {fileID: 5704607183458152728, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: speakers.Array.size
       value: 3
@@ -796,6 +804,10 @@ PrefabInstance:
     - target: {fileID: 5704607183458152728, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: speakers.Array.data[4].portrait
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6654177784972131084, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_Sprite

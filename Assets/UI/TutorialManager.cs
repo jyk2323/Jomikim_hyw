@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Debug = UnityEngine.Debug; // ← 추가
 
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private CanvasGroup tutorialPanelGroup;
+    [SerializeField] private Button closeButton;
     [SerializeField] private PlayerMove playerMove;
 
     [Header("튜토리얼 직후 대사")]
@@ -35,6 +38,11 @@ public class TutorialManager : MonoBehaviour
         tutorialPanel.SetActive(true);
         tutorialPanelGroup.blocksRaycasts = true;
         playerMove.canMove = false;
+
+        if (closeButton != null)
+            closeButton.onClick.AddListener(CloseTutorial);
+        else
+            Debug.LogError("TutorialManager: Close Button이 Inspector에 연결되지 않았어요.");
     }
 
     private void Update()
@@ -54,6 +62,8 @@ public class TutorialManager : MonoBehaviour
 
     private void CloseTutorial()
     {
+        if (!tutorialPanel.activeSelf) return; // 중복 호출 방지 (맨 위에서 검사)
+
         tutorialPanel.SetActive(false);
         tutorialPanelGroup.blocksRaycasts = false;
 
