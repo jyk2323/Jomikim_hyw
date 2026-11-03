@@ -375,6 +375,9 @@ MonoBehaviour:
   empItemName: EMP
   empDuration: 5
   consumeEmp: 1
+  healItemName: "\uD68C\uBCF5\uC57D"
+  healHearts: 3
+  fullHpMessage: "\uCCB4\uB825\uC774 \uC774\uBBF8 \uAC00\uB4DD \uCC3C\uC5B4\uC694"
 --- !u!114 &41873680
 MonoBehaviour:
   m_ObjectHideFlags: 0
