@@ -28,6 +28,23 @@ public class DialogueManager : MonoBehaviour
 
     public float typingSpeed = 0.05f;
 
+    // 타이핑 소리 방식
+    // Loop    : 긴 타이핑 음원(예: 4초)을 문장이 나오는 동안 반복 재생, 출력 끝나면 정지
+    // PerChar : 짧은 "톡" 소리를 몇 글자마다 한 번씩 재생
+    public enum TypingSoundMode { Loop, PerChar }
+
+    [Header("타이핑 소리 (볼륨은 시작화면 설정의 효과음 슬라이더를 따름)")]
+    public AudioClip typingSound;            // 타이핑 효과음
+    public TypingSoundMode soundMode = TypingSoundMode.Loop;
+
+    [Header("Loop 방식 설정")]
+    public bool randomStartPoint = true;     // 매 문장 음원의 다른 지점부터 재생 (항상 똑같이 들리지 않게)
+
+    [Header("PerChar 방식 설정")]
+    public int soundEveryChars = 2;          // 몇 글자마다 소리 낼지 (1 = 매 글자)
+    [Range(0f, 0.3f)] public float pitchRandom = 0.05f; // 소리 높낮이를 살짝 랜덤하게
+    private AudioSource typingAudio;
+
     [Header("스킵")]
     public Button skipButton;          // 대사창의 SKIP 버튼 (없어도 됨)
     public Key skipKey = Key.Escape;   // 키보드 스킵 키
@@ -53,6 +70,11 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         dialoguePanel.SetActive(false);
+
+        // 타이핑 소리용 AudioSource (없으면 자동으로 붙임)
+        typingAudio = GetComponent<AudioSource>();
+        if (typingAudio == null) typingAudio = gameObject.AddComponent<AudioSource>();
+        typingAudio.playOnAwake = false;
         if (skipButton != null)
             skipButton.onClick.AddListener(SkipDialogue);
     }
@@ -74,6 +96,7 @@ public class DialogueManager : MonoBehaviour
                 StopAllCoroutines();
                 dialogueText.text = currentText;
                 isTyping = false;
+                StopTypingSound(); // 문장 한 번에 표시 → 소리도 즉시 정지
             }
             else
             {
@@ -180,13 +203,52 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         dialogueText.text = "";
 
+        // Loop 방식: 문장 시작할 때 음원 반복 재생 시작
+        if (soundMode == TypingSoundMode.Loop) StartLoopSound();
+
+        int count = 0;
         foreach (char c in line)
         {
             dialogueText.text += c;
+
+            // PerChar 방식: 공백이 아닌 글자마다 (soundEveryChars 간격으로) 타이핑 소리
+            if (soundMode == TypingSoundMode.PerChar && !char.IsWhiteSpace(c))
+            {
+                if (count % Mathf.Max(1, soundEveryChars) == 0) PlayTypingSound();
+                count++;
+            }
+
             yield return new WaitForSeconds(typingSpeed);
         }
 
         isTyping = false;
+        StopTypingSound(); // 문장 출력 끝 → 소리 즉시 정지
+    }
+
+    void StopTypingSound()
+    {
+        if (typingAudio != null) typingAudio.Stop();
+    }
+
+    // 음원 끝까지 재생되면 처음부터 자동으로 다시 재생 (loop)
+    void StartLoopSound()
+    {
+        if (typingSound == null || typingAudio == null) return;
+
+        typingAudio.clip = typingSound;
+        typingAudio.loop = true;
+        typingAudio.pitch = 1f;
+        typingAudio.volume = AudioManager.SfxVolume;
+        typingAudio.time = randomStartPoint ? Random.Range(0f, typingSound.length * 0.9f) : 0f;
+        typingAudio.Play();
+    }
+
+    void PlayTypingSound()
+    {
+        if (typingSound == null || typingAudio == null) return;
+        typingAudio.loop = false;
+        typingAudio.pitch = 1f + Random.Range(-pitchRandom, pitchRandom);
+        typingAudio.PlayOneShot(typingSound, AudioManager.SfxVolume);
     }
 
     // 버튼과 키가 같이 쓰는 스킵 함수
@@ -196,6 +258,7 @@ public class DialogueManager : MonoBehaviour
 
         StopAllCoroutines();
         isTyping = false;
+        StopTypingSound();
         EndDialogue();
     }
 
@@ -211,6 +274,7 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        StopTypingSound();
         isDialogueActive = false;
         dialoguePanel.SetActive(false);
 
