@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Phase1 : MonoBehaviour
+// 1차: 세 지점에서 부채꼴 탄막
+public class Phase1 : BossPhase
 {
     [Tooltip("BossBullet 프리팹을 연결하세요")]
     public GameObject bulletPrefab;
@@ -34,30 +35,9 @@ public class Phase1 : MonoBehaviour
     [Tooltip("섞어 쏘기 사이 간격(초)")]
     public float mixedDelay = 1.2f;
 
-    [Header("1차 끝나고 대사")]
-    public Sprite panelSprite;   // 대사창 배경 (비우면 기본)
+    // (1차 끝 대사 End Lines는 공통 칸으로 옮겨짐 - 입력해 둔 대사는 그대로 유지됨)
 
-    [TextArea]
-    public string[] endLines;    // 줄마다 맨 앞에 [이름]. 예) [카린] 여기서 끝낼 순 없어!
-
-    private Coroutine phaseCoroutine;
-
-    public void StartPhase()
-    {
-        StopPhase(); // 이전에 돌던 패턴이 있으면 먼저 멈춤 (중복 실행 방지)
-        phaseCoroutine = StartCoroutine(PhaseRoutine());
-    }
-
-    public void StopPhase()
-    {
-        if (phaseCoroutine != null)
-        {
-            StopCoroutine(phaseCoroutine);
-            phaseCoroutine = null;
-        }
-    }
-
-    IEnumerator PhaseRoutine()
+    protected override IEnumerator PhaseRoutine()
     {
         FireSemiCircle(topCenter.position, topCenterAim);
         yield return new WaitForSeconds(delayBetweenShots);
@@ -80,16 +60,8 @@ public class Phase1 : MonoBehaviour
             yield return new WaitForSeconds(mixedDelay);
         }
 
-        // 대사 있으면 출력 후 2차로, 없으면 바로 2차로!
-        if (endLines != null && endLines.Length > 0)
-        {
-            DialogueManager.instance.OnDialogueEnd = () => BossManager.instance.StartPhase2();
-            DialogueManager.instance.StartDialogue(endLines, true, panelSprite, null);
-        }
-        else
-        {
-            BossManager.instance.StartPhase2();
-        }
+        // 마지막 총알이 날아갈 시간 조금 주고 끝 (끝 대사와 다음 차수는 BossManager가 처리)
+        yield return new WaitForSeconds(1f);
     }
 
     // 0 = 위쪽, 1 = 왼쪽 아래, 2 = 오른쪽 아래
