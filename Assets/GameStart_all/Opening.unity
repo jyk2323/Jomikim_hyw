@@ -135,6 +135,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2641041356196767058, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
   m_PrefabInstance: {fileID: 6060044814192156819}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &911513286 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+  m_PrefabInstance: {fileID: 6060044814192156819}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1284925963 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1075616442517227233, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
@@ -246,6 +251,7 @@ MonoBehaviour:
   nameText: {fileID: 1873648451}
   dialogueText: {fileID: 1284925963}
   fadeImage: {fileID: 1591512722}
+  skipButtonObj: {fileID: 911513286}
   characterImage: {fileID: 733414219}
   speakers:
   - name: "\uCE74\uB9B0"
@@ -821,6 +827,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1456964036}
+    - target: {fileID: 8112907431110394103, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkipOpening
+      objectReference: {fileID: 0}
     - target: {fileID: 9185524669565402969, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_PixelPerfect
       value: 0

@@ -19,7 +19,8 @@ public class OpeningManager : MonoBehaviour
     public GameObject dialoguePanel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
-    public Image fadeImage;
+    public Image fadeImage;                // 화면 전체 검은 이미지 (컷 전환 페이드용, 없어도 됨)
+    public GameObject skipButtonObj;      // ← 추가: 오프닝용 SKIP 버튼
 
     [Header("주요 인물 얼굴 (여기 등록된 이름만 얼굴이 나옴)")]
     public Image characterImage;
@@ -75,6 +76,7 @@ public class OpeningManager : MonoBehaviour
     void Start()
     {
         dialoguePanel.SetActive(false);
+        if (skipButtonObj != null) skipButtonObj.SetActive(false);   // ← 추가
         if (fadeImage != null)
         {
             fadeImage.raycastTarget = false;
@@ -128,6 +130,7 @@ public class OpeningManager : MonoBehaviour
             dialoguePanel.SetActive(false);
             if (cutImage != null) cutImage.sprite = cut.image;
             yield return Fade(1f, 0f);
+            if (skipButtonObj != null) skipButtonObj.SetActive(true);   // ← 추가
 
             if (cut.lines == null || cut.lines.Length == 0)
             {
@@ -213,6 +216,7 @@ public class OpeningManager : MonoBehaviour
     IEnumerator EndOpening()
     {
         isEnding = true;
+        if (skipButtonObj != null) skipButtonObj.SetActive(false);   // ← 추가
         dialoguePanel.SetActive(false);
         yield return Fade(GetFade(), 1f);
         SceneManager.LoadScene(nextSceneName);
