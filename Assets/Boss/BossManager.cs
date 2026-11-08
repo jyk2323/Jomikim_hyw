@@ -1,21 +1,34 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
+// 보스전 전체 진행 관리
+// - 차수는 Inspector의 Phases 목록 순서대로 진행 (순서 바꾸려면 목록에서 끌어서 바꾸기)
+// - 하트를 다 잃으면 "지금 차수"부터 다시 시작
+// - 마지막 차수가 끝나면 다음 씬으로 이동
 public class BossManager : MonoBehaviour
 {
     public static BossManager instance;
 
-    public int currentPhase = 1;
-    public int hitCount = 0;
+    [Header("차수 목록 (위에서부터 1차, 2차, 3차...)")]
+    public BossPhase[] phases;
+
+    [Tooltip("테스트용: 몇 차부터 시작할지 (1 = 처음부터). 완성되면 1로 되돌리기")]
+    public int startPhase = 1;
+
+    [Tooltip("한 차수가 끝나고 다음 차수 시작까지 쉬는 시간(초)")]
+    public float phaseGap = 1f;
+
+    [Header("하트")]
     public int maxHit = 5;
+    public int hitCount = 0;
 
-    public Phase1 phase1;
-    public Phase2 phase2;
-
+    [Header("보스전 끝나면 이동할 씬")]
     public string nextSceneName;
+    public Vector2 nextSpawnPoint;
 
     [Header("재시작까지 기다리는 시간(초)")]
-    public float restartDelay = 0.5f;
+    public float restartDelay = 1.5f;
 
     [Header("HP 표시 (이 씬의 Canvas 안 텍스트)")]
     public TextMeshProUGUI hpText;
@@ -26,8 +39,12 @@ public class BossManager : MonoBehaviour
     public TextMeshProUGUI restartText;   // 화면 가운데 큰 글자
     public string restartMessage = "다시 시작!";
 
-    private bool isRestarting = false;   // 재시작 대기 중인지
-    private GameObject followCamera;     // 1층에서 따라온 카메라
+    [Header("확인용 (지금 몇 번째 차수인지, 0부터)")]
+    public int currentIndex = 0;
+
+    private bool isRestarting = false;    // 재시작/차수 전환 대기 중인지
+    private bool isEnding = false;
+    private GameObject followCamera;      // 1층에서 따라온 카메라
     private bool isQuitting = false;
 
     void Awake()
@@ -45,41 +62,63 @@ public class BossManager : MonoBehaviour
 
     void Start()
     {
-        // 시작하자마자 HP 표시하고, 재시작 안내는 숨김 (1차 시작 전 대기 시간 동안 "New Text"가 보이지 않게)
         UpdateHpText();
         if (restartText != null) restartText.gameObject.SetActive(false);
 
+        currentIndex = Mathf.Clamp(startPhase - 1, 0, Mathf.Max(0, phases.Length - 1));
         isRestarting = true;
-        Invoke(nameof(StartPhase1), restartDelay);
+        Invoke(nameof(BeginCurrentPhase), restartDelay);
     }
 
-    public void StartPhase1()
+    // ───────── 차수 진행 ─────────
+    void BeginCurrentPhase()
     {
         isRestarting = false;
-        currentPhase = 1;
-        hitCount = 0;
-
-        if (PlayerHealth.instance != null)
-            PlayerHealth.instance.ResetBossHp();
-
-        UpdateHpText();
         if (restartText != null) restartText.gameObject.SetActive(false);
 
-        phase1.StartPhase();
+        // 목록에 빈 칸(아직 안 만든 차수)이 있으면 건너뜀
+        while (currentIndex < phases.Length && phases[currentIndex] == null)
+            currentIndex++;
+
+        if (currentIndex >= phases.Length)
+        {
+            EndBoss();
+            return;
+        }
+
+        phases[currentIndex].StartPhase();
     }
 
-    public void StartPhase2()
+    // 각 차수가 끝나면 (끝 대사까지 끝난 뒤) BossPhase가 부름
+    public void OnPhaseEnd(BossPhase phase)
     {
-        if (isRestarting) return; // 재시작 중이면 2차로 넘어가지 않음
+        if (isRestarting || isEnding) return;
+        if (currentIndex >= phases.Length || phases[currentIndex] != phase) return;
 
-        currentPhase = 2;
-        phase2.StartPhase();
+        ClearBullets();
+        currentIndex++;
+
+        isRestarting = true; // 다음 차수 시작 전까지 맞아도 무시
+        Invoke(nameof(BeginCurrentPhase), phaseGap);
     }
 
-    // 총알에 맞았을 때 (PlayerHealth.TakeBossDamage에서 호출)
+    void EndBoss()
+    {
+        if (isEnding) return;
+        isEnding = true;
+
+        StopAllPhases();
+        ClearBullets();
+        FadeManager.instance.LoadScene(nextSceneName, nextSpawnPoint);
+    }
+
+    // ───────── 피격 / 재시작 ─────────
+    // 총알, 로봇팔에 맞았을 때 (PlayerHealth.TakeBossDamage에서 호출)
     public void OnPlayerHit()
     {
-        if (isRestarting) return; // 재시작 대기 중에는 맞아도 무시
+        if (isRestarting || isEnding) return;
+        // 차수 사이 대사 중에는 안 맞음
+        if (DialogueManager.instance != null && DialogueManager.instance.IsDialogueActive) return;
 
         hitCount++;
         UpdateHpText();
@@ -88,24 +127,37 @@ public class BossManager : MonoBehaviour
             Restart();
     }
 
-    // 재시작은 딱 한 번만 예약하고, 남은 것들을 모두 정리
+    // 하트를 다 잃으면 지금 차수를 처음부터 다시 (하트도 다시 가득)
     void Restart()
     {
         isRestarting = true;
 
-        CancelInvoke();      // 이미 예약된 재시작 취소
-        phase1.StopPhase();
-        phase2.StopPhase();
+        CancelInvoke();
+        StopAllPhases();
         ClearBullets();
 
-        // "다시 시작!" 안내 (재시작될 때 꺼짐)
+        hitCount = 0;
+        if (PlayerHealth.instance != null) PlayerHealth.instance.ResetBossHp();
+
         if (restartText != null)
         {
             restartText.text = restartMessage;
             restartText.gameObject.SetActive(true);
         }
 
-        Invoke(nameof(StartPhase1), restartDelay);
+        Invoke(nameof(RefillAndBegin), restartDelay);
+    }
+
+    void RefillAndBegin()
+    {
+        UpdateHpText();
+        BeginCurrentPhase();
+    }
+
+    void StopAllPhases()
+    {
+        foreach (BossPhase p in phases)
+            if (p != null) p.StopPhase();
     }
 
     // 남은 HP = 최대 - 맞은 횟수
@@ -122,20 +174,11 @@ public class BossManager : MonoBehaviour
     }
 
     // 화면에 남은 총알 전부 삭제
-    void ClearBullets()
+    public void ClearBullets()
     {
         BossBullet[] bullets = FindObjectsByType<BossBullet>(FindObjectsSortMode.None);
         foreach (BossBullet b in bullets)
             Destroy(b.gameObject);
-    }
-
-    public void OnPhase2End()
-    {
-        phase1.StopPhase();
-        phase2.StopPhase();
-        ClearBullets();
-
-        FadeManager.instance.LoadScene(nextSceneName, Vector2.zero);
     }
 
     void OnApplicationQuit()
@@ -151,5 +194,58 @@ public class BossManager : MonoBehaviour
 
         if (instance == this)
             instance = null;
+    }
+}
+
+// ───────── 모든 차수의 공통 규칙 ─────────
+// 새 차수를 만들 때는 BossPhase를 상속하고 PhaseRoutine()만 만들면 됨.
+// PhaseRoutine이 끝나면 → (끝 대사) → BossManager.OnPhaseEnd → 다음 차수
+public abstract class BossPhase : MonoBehaviour
+{
+    [Header("이 차수가 끝나고 나오는 대사 (비우면 바로 다음 차수)")]
+    public Sprite panelSprite;     // 대사창 배경 (비우면 기본)
+    [TextArea]
+    public string[] endLines;      // 줄마다 맨 앞에 [이름]
+
+    private Coroutine routine;
+
+    public void StartPhase()
+    {
+        StopPhase();
+        routine = StartCoroutine(Run());
+    }
+
+    public void StopPhase()
+    {
+        if (routine != null)
+        {
+            StopCoroutine(routine);
+            routine = null;
+        }
+        OnStopPhase();
+    }
+
+    // 차수의 실제 패턴 (각 차수 스크립트가 만듦)
+    protected abstract IEnumerator PhaseRoutine();
+
+    // 멈출 때 정리할 것이 있으면 (로봇팔 지우기 등)
+    protected virtual void OnStopPhase() { }
+
+    IEnumerator Run()
+    {
+        yield return PhaseRoutine();
+        routine = null;
+
+        if (BossManager.instance != null) BossManager.instance.ClearBullets();
+
+        if (endLines != null && endLines.Length > 0 && DialogueManager.instance != null)
+        {
+            DialogueManager.instance.OnDialogueEnd = () => BossManager.instance.OnPhaseEnd(this);
+            DialogueManager.instance.StartDialogue(endLines, true, panelSprite, null);
+        }
+        else if (BossManager.instance != null)
+        {
+            BossManager.instance.OnPhaseEnd(this);
+        }
     }
 }

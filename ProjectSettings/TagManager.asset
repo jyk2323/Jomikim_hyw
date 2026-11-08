@@ -48,11 +48,11 @@ TagManager:
   - name: Objects_1
     uniqueID: 4004851927
     locked: 0
-  - name: Objects_2
-    uniqueID: 1194639307
-    locked: 0
   - name: Charactor
     uniqueID: 2950413773
+    locked: 0
+  - name: Objects_2
+    uniqueID: 1194639307
     locked: 0
   - name: Button
     uniqueID: 1623609125

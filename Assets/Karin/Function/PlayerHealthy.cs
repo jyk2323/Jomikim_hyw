@@ -18,6 +18,12 @@ public class PlayerHealth : MonoBehaviour
     public TextMeshProUGUI heartText;
     public string[] hideHeartsInScenes = { "Start", "Opening", "Part1,2", "ComputerUI" };
 
+    [Header("맞았을 때 - 빨간 깜빡임")]
+    public Color hitColor = new Color(1f, 0.2f, 0.2f, 1f);  // 색과 투명도(A) 조절
+    public int hitBlinkCount = 2;                           // 깜빡이는 횟수
+    public float hitBlinkInterval = 0.08f;                  // 깜빡임 간격(초)
+    private Coroutine hitRoutine;
+
     [Header("사망 연출 - 빨간 깜빡임")]
     public Color blinkColor = new Color(1f, 0f, 0f, 1f);   // 색과 투명도(A) 조절
     public int blinkCount = 4;                              // 깜빡이는 횟수
@@ -134,7 +140,44 @@ public class PlayerHealth : MonoBehaviour
         UpdateHearts();
 
         if (currentHp <= 0)
+        {
+            StopHitBlink();
             StartCoroutine(DeathRoutine());
+        }
+        else
+        {
+            PlayHitBlink();
+        }
+    }
+
+    // ───────── 맞았을 때 깜빡임 ─────────
+    void PlayHitBlink()
+    {
+        if (sr == null) return;
+        StopHitBlink();                          // 연달아 맞으면 처음부터 다시 깜빡
+        hitRoutine = StartCoroutine(HitBlinkRoutine());
+    }
+
+    void StopHitBlink()
+    {
+        if (hitRoutine != null)
+        {
+            StopCoroutine(hitRoutine);
+            hitRoutine = null;
+        }
+        if (sr != null && !isDead) sr.color = originalColor;
+    }
+
+    IEnumerator HitBlinkRoutine()
+    {
+        for (int i = 0; i < hitBlinkCount; i++)
+        {
+            sr.color = hitColor;
+            yield return new WaitForSeconds(hitBlinkInterval);
+            sr.color = originalColor;
+            yield return new WaitForSeconds(hitBlinkInterval);
+        }
+        hitRoutine = null;
     }
 
     // ───────── 회복 ─────────
@@ -256,6 +299,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeBossDamage()
     {
         bossCurrentHp--;
+        PlayHitBlink();   // 보스전에서도 맞으면 깜빡임
 
         if (bossHpText != null)
             bossHpText.text = "HP : " + bossCurrentHp;
