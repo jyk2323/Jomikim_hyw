@@ -87,10 +87,13 @@ public class SkillCheckManager : MonoBehaviour
         if (inHit)
         {
             Debug.Log("★ PERFECT! ★");
+            success = true;     
+
         }
         else if (inArc)
         {
             Debug.Log("✓ SUCCESS");
+            success = true;
         }
         else
         {
