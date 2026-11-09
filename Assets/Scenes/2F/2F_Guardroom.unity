@@ -184,7 +184,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1194639307
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2105971728334930012, guid: a879e86b50f4e344fba163fb4282034e, type: 3}
@@ -567,7 +567,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -758933925
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -1153,7 +1153,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -758933925
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -2048,7 +2048,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1194639307
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4390688569156087897, guid: a066dc350fda3034ab7b9aa29a8e9551, type: 3}
@@ -2084,6 +2084,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 26265287}
     m_Modifications:
+    - target: {fileID: 320754749093398461, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1623609125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2227057892894254351, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2577561057093062872, guid: f60ff532b59372342a2af43e73204f5d, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
