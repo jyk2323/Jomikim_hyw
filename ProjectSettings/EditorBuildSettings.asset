@@ -65,6 +65,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameStart_all/Opening.unity
     guid: 5498f46476c5119409ea3035c97654ef
+  - enabled: 1
+    path: Assets/Boss/Chase/Chase_Bossroom.unity
+    guid: cfdbaad24297e70498127d4212bac62b
+  - enabled: 1
+    path: Assets/Boss/Chase/Chase_Hallway.unity
+    guid: c3107118071c2014b98a65632ad61240
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
