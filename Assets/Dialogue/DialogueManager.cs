@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -68,7 +70,11 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        GameObject keepRoot = transform.root.gameObject;
+        UnityEngine.Debug.Log($"[DM] root={keepRoot.name}, scene={keepRoot.scene.name}, 내 오브젝트={gameObject.name}, 개수={FindObjectsByType<DialogueManager>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length}");
+        if (keepRoot.scene.name != "DontDestroyOnLoad")
+            DontDestroyOnLoad(keepRoot);
+
         dialoguePanel.SetActive(false);
 
         // 타이핑 소리용 AudioSource (없으면 자동으로 붙임)
