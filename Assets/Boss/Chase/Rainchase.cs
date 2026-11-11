@@ -8,6 +8,8 @@ using System.Collections;
 // - 카린 쪽으로 똑바로 걸어옴, 시간이 갈수록 조금씩 빨라짐
 // - 잡히면 → 추격전 처음부터 다시 / 출구에 닿으면 → 다음 씬
 // - 움직이는 방향에 맞춰 걷는 그림을 바꿔줌 (Animator 필요 없음)
+// - 추격전 씬이 여러 개일 때: 다음 씬에서도 레인이 "들어온 문으로" 따라 들어옴
+//   (카린과 벌어져 있던 거리만큼 늦게 등장 + 빨라진 속도도 그대로 이어짐)
 // 레인 오브젝트에 붙이기 (SpriteRenderer 필요)
 public class RainChase : MonoBehaviour
 {
@@ -31,8 +33,13 @@ public class RainChase : MonoBehaviour
     public float maxSpeed = 5.5f;
 
     [Header("출발")]
-    [Tooltip("대사가 끝나고 몇 초 뒤에 쫓아올지")]
+    [Tooltip("대사가 끝나고 몇 초 뒤에 쫓아올지 (추격전 첫 씬에서만 사용)")]
     public float startDelay = 1.5f;
+    [Tooltip("이어지는 씬에서 레인이 등장하기까지 최소/최대 시간(초)")]
+    public float minEnterDelay = 0.5f;
+    public float maxEnterDelay = 3f;
+    [Tooltip("체크: 등장하기 전까지 레인을 숨김 (문으로 따라 들어오는 느낌)")]
+    public bool hideUntilStart = true;
 
     [Header("잡혔을 때")]
     [Tooltip("이 거리보다 가까워지면 잡힘")]
@@ -48,6 +55,17 @@ public class RainChase : MonoBehaviour
     public float goalRadius = 1f;
     public string nextSceneName;
     public Vector2 nextSpawnPoint;
+    [Tooltip("체크: 다음 씬도 추격전 (레인이 따라옴) / 해제: 추격전 끝")]
+    public bool nextIsChase = false;
+
+    // 씬을 넘어가도 남는 값 (다음 추격전 씬으로 전달)
+    private static bool carried = false;
+    private static float carriedSpeed;
+    private static float carriedDelay;
+    // 이 씬을 시작할 때 쓴 값 (잡혀서 다시 할 때 똑같이)
+    private bool usedCarry;
+    private float usedSpeed;
+    private float usedDelay;
 
     private SpriteRenderer sr;
     private Transform player;
@@ -66,8 +84,21 @@ public class RainChase : MonoBehaviour
 
     IEnumerator Start()
     {
+        // 앞 씬에서 이어진 추격전이면 그 속도/시간차를 그대로 사용
+        float delay = startDelay;
         currentSpeed = moveSpeed;
+        usedCarry = carried;
+        if (carried)
+        {
+            currentSpeed = carriedSpeed;
+            delay = carriedDelay;
+            carried = false;
+        }
+        usedSpeed = currentSpeed;
+        usedDelay = delay;
+
         SetFrames(idleFrames, false);
+        if (usedCarry && hideUntilStart) sr.enabled = false;
 
         // 카린 찾기
         while (player == null)
@@ -85,7 +116,8 @@ public class RainChase : MonoBehaviour
         yield return null;
         while (DialogueBusy()) yield return null;
 
-        yield return new WaitForSeconds(startDelay);
+        yield return new WaitForSeconds(delay);
+        sr.enabled = true;
         chasing = true;
     }
 
@@ -189,6 +221,14 @@ public class RainChase : MonoBehaviour
         yield return new WaitForSeconds(restartDelay);
 
         if (move != null) move.enabled = true;
+
+        // 이어진 추격전이었으면 다시 할 때도 같은 속도/시간차로
+        if (usedCarry)
+        {
+            carried = true;
+            carriedSpeed = usedSpeed;
+            carriedDelay = usedDelay;
+        }
         // 이 씬을 처음부터 다시 (레인도 원래 자리로 돌아감)
         FadeManager.instance.LoadScene(SceneManager.GetActiveScene().name, playerRestartPoint);
     }
@@ -197,6 +237,22 @@ public class RainChase : MonoBehaviour
     {
         finished = true;
         SetFrames(idleFrames, false);
+
+        if (nextIsChase)
+        {
+            // 레인이 카린보다 얼마나 뒤처져 있었는지 → 다음 씬에서 그만큼 늦게 등장
+            float gap = chasing && sr.enabled
+                ? Vector2.Distance(transform.position, player.position) / Mathf.Max(0.1f, currentSpeed)
+                : maxEnterDelay;
+            carried = true;
+            carriedSpeed = currentSpeed;
+            carriedDelay = Mathf.Clamp(gap, minEnterDelay, maxEnterDelay);
+        }
+        else
+        {
+            carried = false;
+        }
+
         FadeManager.instance.LoadScene(nextSceneName, nextSpawnPoint);
     }
 

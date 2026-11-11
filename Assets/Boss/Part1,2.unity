@@ -645,7 +645,7 @@ MonoBehaviour:
   phaseGap: 1
   maxHit: 5
   hitCount: 0
-  nextSceneName: Chase_Hallway
+  nextSceneName: Chase_1
   nextSpawnPoint: {x: 0.1, y: 2.1}
   restartDelay: 2
   hpText: {fileID: 1437626633}
