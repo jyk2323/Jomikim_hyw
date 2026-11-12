@@ -21,6 +21,7 @@ public class Shooter : MonoBehaviour
 
         // 총알 생성 (내 위치에서 생성)
         GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        if (PlayerHealth.instance != null) PlayerHealth.instance.PlayShootSound(transform.position); // 쏘는 소리
 
        // 방향에 맞게 발사
         bullet.GetComponent<Bullet>().InitBullet(10f, 0, new Vector3(direction, 0, 0));
