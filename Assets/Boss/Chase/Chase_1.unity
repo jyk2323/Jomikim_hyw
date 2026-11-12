@@ -5449,6 +5449,9 @@ MonoBehaviour:
   speedUpPerSecond: 0.1
   maxSpeed: 5.5
   startDelay: 1.5
+  minEnterDelay: 0.5
+  maxEnterDelay: 3
+  hideUntilStart: 1
   catchDistance: 0.7
   caughtText: {fileID: 1354192913}
   caughtMessage: "\uC7A1\uD614\uB2E4..."
@@ -5458,6 +5461,7 @@ MonoBehaviour:
   goalRadius: 1
   nextSceneName: 
   nextSpawnPoint: {x: 0, y: 0}
+  nextIsChase: 0
 --- !u!212 &2030617504
 SpriteRenderer:
   serializedVersion: 2
@@ -5592,7 +5596,7 @@ GameObject:
   - component: {fileID: 2119568029}
   - component: {fileID: 2119568028}
   m_Layer: 0
-  m_Name: 2_Glass door (vertical, horizontal)_0
+  m_Name: ToChase_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5684,8 +5688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0dfb17fdc4d1849aef36eabcc02ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChange
-  nextSceneName: B1_Scene
-  spawnPoint: {x: -11.61, y: 5.25}
+  nextSceneName: Chase_2
+  spawnPoint: {x: -5.13, y: 5.51}
 --- !u!61 &2119568029
 BoxCollider2D:
   m_ObjectHideFlags: 0

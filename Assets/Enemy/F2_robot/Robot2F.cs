@@ -149,6 +149,7 @@ public class Robot2F : MonoBehaviour
         Vector2 spawnPos = (Vector2)transform.position + dir * fireOffset;
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+        if (PlayerHealth.instance != null) PlayerHealth.instance.PlayShootSound(spawnPos); // 쏘는 소리
         Bullet b = bullet.GetComponent<Bullet>();
         if (b != null)
             b.InitBullet(bulletDamage, 0, dir); // 데미지 설정

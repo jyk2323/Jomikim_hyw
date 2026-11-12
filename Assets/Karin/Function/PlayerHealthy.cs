@@ -42,6 +42,22 @@ public class PlayerHealth : MonoBehaviour
     [Header("이 씬들에서는 카린, 인벤토리 UI, 따라오는 카메라를 숨김")]
     public string[] hideWorldInScenes = { "Start", "Opening" };
 
+    [Header("효과음 (볼륨은 시작화면 설정의 효과음 슬라이더를 따름)")]
+    public AudioClip hitSound;                              // 카린이 맞을 때
+    [Range(0f, 1f)] public float hitVolume = 1f;
+    public AudioClip shootSound;                            // 로봇이 총 쏠 때
+    [Range(0f, 1f)] public float shootVolume = 0.4f;        // 맞는 소리보다 작게
+    [Tooltip("카린에서 몇 칸 안의 로봇만 쏘는 소리가 들림 (타일 1칸 = 1)")]
+    public float shootHearDistance = 8f;
+    [Tooltip("체크: 멀수록 작게 들림 / 해제: 거리 안이면 같은 크기")]
+    public bool quieterWhenFar = true;
+    [Tooltip("이 시간(초) 안에 또 쏘면 소리 한 번만 (여러 로봇이 동시에 쏴도 시끄럽지 않게)")]
+    public float shootSoundGap = 0.12f;
+    [Range(0f, 0.3f)] public float pitchRandom = 0.08f;     // 매번 소리 높낮이 살짝 다르게
+
+    private AudioSource sfxAudio;
+    private float lastShootSoundTime = -10f;
+
     // 보스전 전용 HP
     public int bossMaxHp = 5;
     public int bossCurrentHp;
@@ -73,6 +89,10 @@ public class PlayerHealth : MonoBehaviour
         if (sr != null) originalColor = sr.color;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 효과음 전용 스피커
+        sfxAudio = gameObject.AddComponent<AudioSource>();
+        sfxAudio.playOnAwake = false;
 
         HideDeathUI();
         if (blackScreen == null) Debug.LogWarning("[PlayerHealth] Black Screen 칸이 비어 있어요. 1층 씬의 KARIN에 연결하세요.");
@@ -138,6 +158,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHp = Mathf.Max(0f, currentHp - damage);
         UpdateHearts();
+        PlayHitSound();
 
         if (currentHp <= 0)
         {
@@ -295,11 +316,40 @@ public class PlayerHealth : MonoBehaviour
         if (rb != null && !value) rb.linearVelocity = Vector2.zero;
     }
 
+    // ───────── 효과음 ─────────
+    void PlayHitSound()
+    {
+        if (hitSound == null || sfxAudio == null) return;
+        sfxAudio.pitch = 1f;
+        sfxAudio.PlayOneShot(hitSound, hitVolume * AudioManager.SfxVolume);
+    }
+
+    // 로봇이 총 쏠 때 부름 (from = 총알이 나온 위치)
+    public void PlayShootSound(Vector3 from)
+    {
+        if (shootSound == null || sfxAudio == null || isDead) return;
+
+        // 너무 멀면 안 들림
+        float dist = Vector2.Distance(transform.position, from);
+        if (dist > shootHearDistance) return;
+
+        // 방금 소리 났으면 건너뜀
+        if (Time.time - lastShootSoundTime < shootSoundGap) return;
+        lastShootSoundTime = Time.time;
+
+        float volume = shootVolume * AudioManager.SfxVolume;
+        if (quieterWhenFar) volume *= 1f - (dist / shootHearDistance) * 0.7f; // 제일 멀어도 30%
+
+        sfxAudio.pitch = 1f + Random.Range(-pitchRandom, pitchRandom);
+        sfxAudio.PlayOneShot(shootSound, volume);
+    }
+
     // ───────── 보스전 ─────────
     public void TakeBossDamage()
     {
         bossCurrentHp--;
         PlayHitBlink();   // 보스전에서도 맞으면 깜빡임
+        PlayHitSound();
 
         if (bossHpText != null)
             bossHpText.text = "HP : " + bossCurrentHp;

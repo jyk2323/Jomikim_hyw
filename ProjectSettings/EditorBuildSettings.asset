@@ -72,6 +72,9 @@ EditorBuildSettings:
     path: Assets/Boss/Chase/Chase_1.unity
     guid: c3107118071c2014b98a65632ad61240
   - enabled: 1
+    path: Assets/Boss/Chase/Chase_2.unity
+    guid: 3c3bc4f48dbb0014684858a301a89d93
+  - enabled: 1
     path: Assets/GameStart_all/Ending_Scene.unity
     guid: ac0247bd212c22f46ac2962d5f911f78
   m_configObjects:

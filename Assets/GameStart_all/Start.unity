@@ -1500,10 +1500,22 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.066
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1370227113}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetSFXVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &850971940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,7 +1814,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.071
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2007,8 +2019,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 939348146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.071, y: 0}
+  m_AnchorMax: {x: 0.071, y: 1}
   m_AnchoredPosition: {x: -0.0000076293945, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2083,7 +2095,7 @@ RectTransform:
   m_Father: {fileID: 1834161790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.066, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2415,8 +2427,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1912498181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.066, y: 0}
+  m_AnchorMax: {x: 0.066, y: 1}
   m_AnchoredPosition: {x: -0.0000076293945, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2490,7 +2502,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 1370227114}
-  sfxSource: {fileID: 1370227114}
+  sfxSource: {fileID: 1370227115}
+  bgmSlider: {fileID: 910207495}
+  sfxSlider: {fileID: 834685151}
 --- !u!82 &1370227114
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3221,6 +3235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5c53e8d7f3ecb4287af35315716072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStart
+  nextSceneName: Opening
 --- !u!1 &1682110874
 GameObject:
   m_ObjectHideFlags: 0
@@ -4147,7 +4162,7 @@ RectTransform:
   m_Father: {fileID: 2113226378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.071, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
