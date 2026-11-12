@@ -128,9 +128,9 @@ public class OpeningManager : MonoBehaviour
 
             if (c > 0) yield return Fade(0f, 1f);
             dialoguePanel.SetActive(false);
+            if (skipButtonObj != null) skipButtonObj.SetActive(false);   // ← 추가
             if (cutImage != null) cutImage.sprite = cut.image;
             yield return Fade(1f, 0f);
-            if (skipButtonObj != null) skipButtonObj.SetActive(true);   // ← 추가
 
             if (cut.lines == null || cut.lines.Length == 0)
             {
@@ -145,6 +145,7 @@ public class OpeningManager : MonoBehaviour
             }
 
             dialoguePanel.SetActive(true);
+            if (skipButtonObj != null) skipButtonObj.SetActive(true);   // ← 추가
             SetSpeaker(null);
             skipCut = false;
 

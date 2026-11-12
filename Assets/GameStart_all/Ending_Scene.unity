@@ -208,7 +208,7 @@ MonoBehaviour:
   - name: "\uB808\uC778"
     portrait: {fileID: -3978272887453804091, guid: c0c8b4e85e3685d49a6ccb2e66f171df, type: 3}
   typingSpeed: 0.08
-  fadeTime: 0.5
+  fadeTime: 1
   nextSceneName: Start
 --- !u!4 &1456964037
 Transform:
@@ -873,7 +873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6654177784972131084, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
       propertyPath: m_Sprite
