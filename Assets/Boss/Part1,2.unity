@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69aeba2a51c30984ba360c65e998f9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Phase2
-  panelSprite: {fileID: -7760104753429257297, guid: 1bd49787a20d38b428504122c716d484, type: 3}
+  panelSprite: {fileID: 0}
   endLines:
   - "[\uB808\uC778] \uB0B4\uAC00 \uC774\uB300\uB85C \uB193\uCE60 \uAC83 \uAC19\uB098? "
   - "[\uB808\uC778] \uC950\uC0C8\uB07C\uCC98\uB7FC \uB3C4\uB9DD\uCE58\uB294 \uAC83\uB3C4
@@ -849,7 +849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f97238dd66fcf4eb320d62defedbb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Phase1
-  panelSprite: {fileID: -7760104753429257297, guid: 1bd49787a20d38b428504122c716d484, type: 3}
+  panelSprite: {fileID: 0}
   endLines:
   - "[\uB808\uC778] \uD558\uD558\uD558 \uC774\uAC74 \uB9DB\uBCF4\uAE30\uC77C \uBFD0\uC774\uB77C\uACE0"
   bulletPrefab: {fileID: 3710358101850134680, guid: 8c045a173b8b662409892113973a6fd9, type: 3}

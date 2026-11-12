@@ -5629,12 +5629,12 @@ MonoBehaviour:
   - {fileID: 1502647138}
   - {fileID: 996188447}
   - {fileID: 1589701023}
-  errorInterval: 0.1
+  errorInterval: 0.15
   nextSceneName: Part1,2
   spawnPoint: {x: 0, y: -3}
-  errorSound: {fileID: 8300000, guid: a6b03cdf84700a544a8310c071e11d1c, type: 3}
+  errorSound: {fileID: 8300000, guid: 60fb1612c4ea90e47af3ec00c3f4940c, type: 3}
   errorVolume: 1
-  pitch: 0.75
+  pitch: 1
   pitchRandom: 0.019
   autoSkipSilence: 1
   skipStart: 0.1

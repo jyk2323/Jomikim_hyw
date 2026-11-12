@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 // 추격전: 레인이 카린을 쫓아옴
 // - 대사가 끝나고 잠깐 뒤에 출발 (카린이 먼저 도망갈 시간)
@@ -10,7 +11,8 @@ using System.Collections;
 // - 움직이는 방향에 맞춰 걷는 그림을 바꿔줌 (Animator 필요 없음)
 // - 추격전 씬이 여러 개일 때: 다음 씬에서도 레인이 "들어온 문으로" 따라 들어옴
 //   (카린과 벌어져 있던 거리만큼 늦게 등장 + 빨라진 속도도 그대로 이어짐)
-// 레인 오브젝트에 붙이기 (SpriteRenderer 필요)
+// - 벽/장애물을 통과하지 않음: 카린이 보이면 곧장, 벽에 가려지면 카린이 지나간 길을 따라옴
+// 레인 오브젝트에 붙이기 (SpriteRenderer, Collider2D 필요)
 public class RainChase : MonoBehaviour
 {
     [Header("걷는 그림 (각 4장, 순서대로)")]
@@ -31,6 +33,14 @@ public class RainChase : MonoBehaviour
     [Tooltip("1초마다 빨라지는 양 (0이면 계속 같은 속도)")]
     public float speedUpPerSecond = 0.1f;
     public float maxSpeed = 5.5f;
+
+    [Header("벽")]
+    [Tooltip("체크: 벽/장애물에 막힘 (카린이 지나간 길을 따라옴) / 해제: 벽 통과")]
+    public bool blockedByWalls = true;
+    [Tooltip("벽으로 칠 레이어 (보통 Everything 그대로)")]
+    public LayerMask wallLayers = ~0;
+    [Tooltip("이 시간(초) 동안 끼어서 못 움직이면 잠깐 벽을 통과해서 빠져나옴")]
+    public float stuckTime = 0.6f;
 
     [Header("출발")]
     [Tooltip("대사가 끝나고 몇 초 뒤에 쫓아올지 (추격전 첫 씬에서만 사용)")]
@@ -67,6 +77,14 @@ public class RainChase : MonoBehaviour
     private float usedSpeed;
     private float usedDelay;
 
+    private Rigidbody2D rb;
+    private Collider2D myCol;
+    private readonly Queue<Vector2> trail = new Queue<Vector2>();  // 카린이 지나간 길
+    private Vector2 lastTrailPoint;
+    private Vector2 moveDir;          // 이번에 움직일 방향 (FixedUpdate에서 사용)
+    private Vector2 lastPos;
+    private float stuckTimer = 0f;
+    private float ghostTimer = 0f;    // 0보다 크면 벽 통과 중 (끼었을 때 탈출용)
     private SpriteRenderer sr;
     private Transform player;
     private bool chasing = false;
@@ -80,6 +98,22 @@ public class RainChase : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         if (caughtText != null) caughtText.gameObject.SetActive(false);
+
+        if (blockedByWalls)
+        {
+            // 벽에 막히려면: 콜라이더는 Trigger 해제 + Rigidbody2D (중력 0, 회전 안 함)
+            myCol = GetComponent<Collider2D>();
+            if (myCol != null) myCol.isTrigger = false;
+            else Debug.LogWarning("[RainChase] 레인에 Collider2D가 없어서 벽에 안 막힘");
+
+            rb = GetComponent<Rigidbody2D>();
+            if (rb == null) rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.gravityScale = 0f;
+            rb.freezeRotation = true;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        }
     }
 
     IEnumerator Start()
@@ -112,6 +146,12 @@ public class RainChase : MonoBehaviour
             yield return null;
         }
 
+        // 레인이 카린을 밀지 않게 (잡힘은 거리로 판정)
+        if (myCol != null)
+            foreach (Collider2D pc in player.GetComponentsInChildren<Collider2D>())
+                Physics2D.IgnoreCollision(myCol, pc);
+        lastTrailPoint = player.position;
+
         // 씬 시작 대사가 끝날 때까지 기다림 (대사가 바로 뜨는 경우를 위해 한 프레임 더)
         yield return null;
         while (DialogueBusy()) yield return null;
@@ -123,7 +163,10 @@ public class RainChase : MonoBehaviour
 
     void Update()
     {
+        moveDir = Vector2.zero;
         if (player == null || finished) { Animate(); return; }
+
+        RecordTrail();
 
         // 출구 도착 확인
         if (goalPoint != null && Vector2.Distance(player.position, goalPoint.position) <= goalRadius)
@@ -143,15 +186,132 @@ public class RainChase : MonoBehaviour
         // 점점 빨라짐
         currentSpeed = Mathf.Min(maxSpeed, currentSpeed + speedUpPerSecond * Time.deltaTime);
 
-        // 카린 쪽으로 이동
+        // 어디로 갈지: 벽 없으면 카린한테 곧장 / 벽에 가리면 카린이 지나간 길로
         Vector2 toPlayer = player.position - transform.position;
-        transform.position = Vector2.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
-        ChooseFrames(toPlayer);
+        Vector2 target = NextTarget();
+        Vector2 toTarget = target - (Vector2)transform.position;
+
+        if (rb != null)
+        {
+            moveDir = toTarget.sqrMagnitude > 0.0001f ? toTarget.normalized : Vector2.zero;  // 실제 이동은 FixedUpdate
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target, currentSpeed * Time.deltaTime);
+        }
+        ChooseFrames(toTarget.sqrMagnitude > 0.0001f ? toTarget : toPlayer);
         Animate();
 
         // 잡힘
         if (toPlayer.magnitude <= catchDistance)
             StartCoroutine(Caught());
+    }
+
+    // 물리로 이동 (벽에 막힘)
+    void FixedUpdate()
+    {
+        if (rb == null) return;
+        rb.linearVelocity = moveDir * currentSpeed;
+
+        // 끼임 감지: 움직이려는데 거의 안 움직이면 시간 셈
+        float moved = Vector2.Distance(rb.position, lastPos);
+        lastPos = rb.position;
+
+        if (ghostTimer > 0f)
+        {
+            ghostTimer -= Time.fixedDeltaTime;
+            if (ghostTimer <= 0f && myCol != null) myCol.enabled = true;   // 다시 벽에 막힘
+            return;
+        }
+
+        if (moveDir != Vector2.zero && moved < currentSpeed * Time.fixedDeltaTime * 0.2f)
+        {
+            stuckTimer += Time.fixedDeltaTime;
+            if (stuckTimer >= stuckTime && myCol != null)
+            {
+                // 끼었음 → 0.3초 동안 벽 통과해서 빠져나오기
+                myCol.enabled = false;
+                ghostTimer = 0.3f;
+                stuckTimer = 0f;
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;
+        }
+    }
+
+    // 카린이 지나간 길 기록 (0.3칸마다 점 하나)
+    void RecordTrail()
+    {
+        Vector2 p = player.position;
+        if (Vector2.Distance(p, lastTrailPoint) >= 0.3f)
+        {
+            trail.Enqueue(p);
+            lastTrailPoint = p;
+            if (trail.Count > 600) trail.Dequeue();
+        }
+    }
+
+    Vector2 NextTarget()
+    {
+        Vector2 me = transform.position;
+        Vector2 playerPos = player.position;
+
+        // 벽 안 막는 모드이거나, 카린까지 벽이 없으면 곧장
+        if (!blockedByWalls || ClearLine(me, playerPos))
+        {
+            trail.Clear();
+            lastTrailPoint = playerPos;
+            return playerPos;
+        }
+
+        // 벽에 가려짐 → 카린이 지나간 길을 순서대로 따라감
+        while (trail.Count > 0 && Vector2.Distance(me, trail.Peek()) < 0.2f)
+            trail.Dequeue();
+        // 앞쪽 점이 바로 보이면 건너뛰기 (지름길)
+        while (trail.Count > 1 && ClearLine(me, ElementAt(1)))
+            trail.Dequeue();
+
+        return trail.Count > 0 ? trail.Peek() : playerPos;
+    }
+
+    Vector2 ElementAt(int index)
+    {
+        int i = 0;
+        foreach (Vector2 v in trail) { if (i == index) return v; i++; }
+        return trail.Peek();
+    }
+
+    // 레인 몸이 그대로 지나갈 수 있는지 (가는 선이 아니라 레인 콜라이더 크기로 검사)
+    // 레인/카린 자신과 Trigger는 무시
+    bool ClearLine(Vector2 from, Vector2 to)
+    {
+        Vector2 dir = to - from;
+        float dist = dir.magnitude;
+        if (dist < 0.01f) return true;
+
+        RaycastHit2D[] hits;
+        if (myCol != null && myCol.enabled)
+        {
+            // 콜라이더 크기만큼의 원을 굴려서 검사 (from은 항상 레인 현재 위치)
+            Bounds b = myCol.bounds;
+            float radius = Mathf.Min(b.extents.x, b.extents.y) * 0.95f;
+            hits = Physics2D.CircleCastAll((Vector2)b.center, radius, dir / dist, dist, wallLayers);
+        }
+        else
+        {
+            hits = Physics2D.LinecastAll(from, to, wallLayers);
+        }
+
+        foreach (RaycastHit2D h in hits)
+        {
+            if (h.collider == null || h.collider.isTrigger) continue;
+            if (h.collider == myCol) continue;
+            if (h.collider.transform.IsChildOf(player) || player.IsChildOf(h.collider.transform)) continue;
+            return false;
+        }
+        return true;
     }
 
     // 움직이는 방향에 맞는 그림 고르기
@@ -204,11 +364,12 @@ public class RainChase : MonoBehaviour
     IEnumerator Caught()
     {
         finished = true;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
         SetFrames(idleFrames, false);
 
         // 카린 못 움직이게
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        if (rb != null) rb.linearVelocity = Vector2.zero;
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+        if (playerRb != null) playerRb.linearVelocity = Vector2.zero;
         PlayerMove move = player.GetComponent<PlayerMove>();
         if (move != null) move.enabled = false;
 
@@ -236,6 +397,7 @@ public class RainChase : MonoBehaviour
     void Escape()
     {
         finished = true;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
         SetFrames(idleFrames, false);
 
         if (nextIsChase)
