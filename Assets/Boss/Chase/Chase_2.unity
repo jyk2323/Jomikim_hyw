@@ -364,7 +364,7 @@ MonoBehaviour:
   wallLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  stuckTime: 0.6
+  stuckTime: 0.3
   startDelay: 1.5
   minEnterDelay: 0.5
   maxEnterDelay: 3
@@ -373,7 +373,7 @@ MonoBehaviour:
   caughtText: {fileID: 0}
   caughtMessage: "\uC7A1\uD614\uB2E4..."
   restartDelay: 1.5
-  playerRestartPoint: {x: 0, y: 0}
+  playerRestartPoint: {x: -5.13, y: 5.51}
   goalPoint: {fileID: 1592553577}
   goalRadius: 1
   nextSceneName: B1_Scene

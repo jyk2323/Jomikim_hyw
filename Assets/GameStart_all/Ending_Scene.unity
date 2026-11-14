@@ -210,6 +210,11 @@ MonoBehaviour:
   typingSpeed: 0.08
   fadeTime: 1
   nextSceneName: Start
+  typingSound: {fileID: 8300000, guid: d762dd4b87dfd744da1464b557d080e2, type: 3}
+  soundMode: 0
+  randomStartPoint: 1
+  soundEveryChars: 2
+  pitchRandom: 0.05
 --- !u!4 &1456964037
 Transform:
   m_ObjectHideFlags: 0

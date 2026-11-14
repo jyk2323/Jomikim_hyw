@@ -10268,6 +10268,9 @@ MonoBehaviour:
   - buttonName: "\uC9C0\uD558 "
     sceneName: B1_Scene
     spawnPoint: {x: -11.61, y: 5.25}
+  - buttonName: "\uACBD\uBE44\uC2E4"
+    sceneName: 2F_Guardroom
+    spawnPoint: {x: -1.99, y: 1.76}
   openKey: 94
   fullHealOnJump: 1
   editorOnly: 0

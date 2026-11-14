@@ -64,6 +64,12 @@ public class Phase2 : BossPhase
     [Tooltip("맞는 범위를 그림보다 조금 작게 (1 = 그림 크기 그대로)")]
     public float hitboxScale = 0.8f;
 
+    [Header("팔이 튀어나올 때 효과음 (볼륨은 시작화면 효과음 슬라이더를 따름)")]
+    public AudioClip armSound;
+    [Range(0f, 1f)] public float armVolume = 0.8f;
+    [Range(0f, 0.3f)] public float armPitchRandom = 0.05f;   // 매번 높낮이 살짝 다르게
+
+    private AudioSource sfxAudio;
     private readonly List<GameObject> spawned = new List<GameObject>();
     private int activeArms = 0;
     private static Sprite whiteSprite;
@@ -171,6 +177,7 @@ public class Phase2 : BossPhase
 
         // 2) 길어짐 → 3) 멈춤 → 4) 짧아짐 (닿으면 피격, 팔 하나당 1번만)
         sr.enabled = true;
+        PlayArmSound();
         bool hit = false;
         System.Func<bool> alreadyHit = () => hit;
         System.Action setHit = () => hit = true;
@@ -281,6 +288,18 @@ public class Phase2 : BossPhase
         if (warningSprite != null)
             PlaceArm(g, sr, wallPoint, dir);
         return g;
+    }
+
+    void PlayArmSound()
+    {
+        if (armSound == null) return;
+        if (sfxAudio == null)
+        {
+            sfxAudio = gameObject.AddComponent<AudioSource>();
+            sfxAudio.playOnAwake = false;
+        }
+        sfxAudio.pitch = 1f + Random.Range(-armPitchRandom, armPitchRandom);
+        sfxAudio.PlayOneShot(armSound, armVolume * AudioManager.SfxVolume);   // 여러 팔이 동시에 나와도 겹쳐서 다 들림
     }
 
     // 재시작 / 다음 차수로 갈 때 남은 팔·경고 전부 정리

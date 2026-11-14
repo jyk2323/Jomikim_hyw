@@ -29,6 +29,12 @@ public class Phase1 : BossPhase
     public float bulletLifeTime = 3f;
     public float delayBetweenShots = 2f;
 
+    [Header("발사 효과음 (7발 한 번 = 소리 한 번, 볼륨은 시작화면 효과음 슬라이더를 따름)")]
+    public AudioClip shootSound;
+    [Range(0f, 1f)] public float shootVolume = 0.8f;
+    [Range(0f, 0.3f)] public float shootPitchRandom = 0.05f;   // 매번 높낮이 살짝 다르게
+    private AudioSource sfxAudio;
+
     [Header("섞어 쏘기 (각각 한 번씩 쏜 다음)")]
     [Tooltip("섞어서 몇 번 더 쏠지 (매번 3곳 중 랜덤 1곳, 같은 곳 연속 X)")]
     public int mixedShotCount = 5;
@@ -89,6 +95,7 @@ public class Phase1 : BossPhase
 
     void FireSemiCircle(Vector2 position, float aim)
     {
+        PlayShootSound();   // 부채꼴 한 번 쏠 때 소리 한 번
         for (int i = 0; i < bulletCount; i++)
         {
             Vector2 dir = BulletDir(aim, i);
@@ -119,5 +126,17 @@ public class Phase1 : BossPhase
         Gizmos.color = color;
         for (int i = 0; i < bulletCount; i++)
             Gizmos.DrawLine(point.position, (Vector2)point.position + BulletDir(aim, i) * 2f);
+    }
+
+    void PlayShootSound()
+    {
+        if (shootSound == null) return;
+        if (sfxAudio == null)
+        {
+            sfxAudio = gameObject.AddComponent<AudioSource>();
+            sfxAudio.playOnAwake = false;
+        }
+        sfxAudio.pitch = 1f + Random.Range(-shootPitchRandom, shootPitchRandom);
+        sfxAudio.PlayOneShot(shootSound, shootVolume * AudioManager.SfxVolume);
     }
 }
