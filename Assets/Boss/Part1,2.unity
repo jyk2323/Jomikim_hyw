@@ -452,7 +452,7 @@ MonoBehaviour:
   arenaMin: {x: -7, y: -7}
   arenaMax: {x: 7, y: 2}
   cornerPadding: 0.5
-  waveCount: 8
+  waveCount: 5
   armsFirstWave: 1
   armsLastWave: 3
   waveInterval: 2
@@ -958,7 +958,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1194639307
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2788067527096358538, guid: 12911ef1496af0041a7e2646a15ebc6f, type: 3}
