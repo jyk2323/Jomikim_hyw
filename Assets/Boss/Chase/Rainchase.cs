@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -42,6 +41,11 @@ public class RainChase : MonoBehaviour
     [Tooltip("이 시간(초) 동안 끼어서 못 움직이면 잠깐 벽을 통과해서 빠져나옴")]
     public float stuckTime = 0.6f;
 
+    [Header("대사창")]
+    [Tooltip("체크: 추격전 동안 대사창의 SKIP 버튼을 숨김 (추격전을 나가면 다시 보임)")]
+    public bool hideSkipButton = true;
+    private GameObject hiddenSkipButton;   // 이 씬에서 숨긴 SKIP 버튼 (나갈 때 되돌리기용)
+
     [Header("출발")]
     [Tooltip("대사가 끝나고 몇 초 뒤에 쫓아올지 (추격전 첫 씬에서만 사용)")]
     public float startDelay = 1.5f;
@@ -54,9 +58,8 @@ public class RainChase : MonoBehaviour
     [Header("잡혔을 때")]
     [Tooltip("이 거리보다 가까워지면 잡힘")]
     public float catchDistance = 0.7f;
-    public TextMeshProUGUI caughtText;           // 비워도 됨
-    public string caughtMessage = "잡혔다...";
-    public float restartDelay = 1.5f;
+    [Tooltip("잡혔을 때 대사창에 띄울 대사 (줄마다 맨 앞에 [이름]). 대사가 끝나면 다시 시작")]
+    [TextArea] public string[] caughtLines = { "[카린] 잡혔다..." };
     [Tooltip("다시 시작할 때 카린이 설 위치")]
     public Vector2 playerRestartPoint;
 
@@ -97,7 +100,6 @@ public class RainChase : MonoBehaviour
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        if (caughtText != null) caughtText.gameObject.SetActive(false);
 
         if (blockedByWalls)
         {
@@ -118,6 +120,17 @@ public class RainChase : MonoBehaviour
 
     IEnumerator Start()
     {
+        // 추격전에서는 대사창 SKIP 버튼 숨기기 (ESC 스킵은 그대로)
+        if (hideSkipButton && DialogueManager.instance != null && DialogueManager.instance.skipButton != null)
+        {
+            GameObject btn = DialogueManager.instance.skipButton.gameObject;
+            if (btn.activeSelf)
+            {
+                btn.SetActive(false);
+                hiddenSkipButton = btn;
+            }
+        }
+
         // 앞 씬에서 이어진 추격전이면 그 속도/시간차를 그대로 사용
         float delay = startDelay;
         currentSpeed = moveSpeed;
@@ -132,7 +145,7 @@ public class RainChase : MonoBehaviour
         usedDelay = delay;
 
         SetFrames(idleFrames, false);
-        if (usedCarry && hideUntilStart) sr.enabled = false;
+        if (usedCarry && hideUntilStart) SetVisible(false);   // 그림자 등 자식 그림까지 같이 숨김
 
         // 카린 찾기
         while (player == null)
@@ -157,7 +170,7 @@ public class RainChase : MonoBehaviour
         while (DialogueBusy()) yield return null;
 
         yield return new WaitForSeconds(delay);
-        sr.enabled = true;
+        SetVisible(true);
         chasing = true;
     }
 
@@ -373,13 +386,19 @@ public class RainChase : MonoBehaviour
         PlayerMove move = player.GetComponent<PlayerMove>();
         if (move != null) move.enabled = false;
 
-        if (caughtText != null)
+        // 대사창으로 띄우기: 대사가 끝날 때까지(클릭/스킵) 기다렸다가 다시 시작
+        bool useDialogue = caughtLines != null && caughtLines.Length > 0 && DialogueManager.instance != null;
+        if (useDialogue)
         {
-            caughtText.text = caughtMessage;
-            caughtText.gameObject.SetActive(true);
+            bool dialogueDone = false;
+            DialogueManager.instance.OnDialogueEnd = () => dialogueDone = true;
+            DialogueManager.instance.StartDialogue(caughtLines, true, null, null);
+            while (!dialogueDone) yield return null;
         }
-
-        yield return new WaitForSeconds(restartDelay);
+        else
+        {
+            yield return new WaitForSeconds(1f);   // 대사가 비어 있으면 1초 뒤 바로 다시 시작
+        }
 
         if (move != null) move.enabled = true;
 
@@ -416,6 +435,19 @@ public class RainChase : MonoBehaviour
         }
 
         FadeManager.instance.LoadScene(nextSceneName, nextSpawnPoint);
+    }
+
+    // 추격전 씬을 떠날 때 숨겼던 SKIP 버튼 되돌리기
+    void OnDestroy()
+    {
+        if (hiddenSkipButton != null) hiddenSkipButton.SetActive(true);
+    }
+
+    // 레인 본체 + 자식(그림자 등) 그림을 한꺼번에 보이기/숨기기
+    void SetVisible(bool visible)
+    {
+        foreach (SpriteRenderer r in GetComponentsInChildren<SpriteRenderer>(true))
+            r.enabled = visible;
     }
 
     bool DialogueBusy()

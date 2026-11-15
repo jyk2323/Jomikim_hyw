@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d109faa50ecc4486814b4f3639752d5, type: 3}
+  m_Sprite: {fileID: -1785628159965446790, guid: c19c61fda5265f34bb66537a3e8c1925, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -182,8 +182,10 @@ MonoBehaviour:
   shrinkDuration: 1.5
   targetFrameIndex: 13
   perfectFrameRange: 0
-  goodFrameRange: 1
+  goodFrameRange: 3
   failFrameRange: 3
+  judgeKey: 32
+  reportToHacking: 1
 --- !u!1 &8283970999356551342
 GameObject:
   m_ObjectHideFlags: 0

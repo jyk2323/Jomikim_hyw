@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 // 테스트/시연용 씬 바로가기
 // - F1 키로 메뉴 열기/닫기 → 버튼 누르면 그 씬으로 바로 이동
-// - Canvas나 버튼 만들 필요 없음 (화면 왼쪽 위에 자동으로 그려짐)
+// - Canvas나 버튼 만들 필요 없음 (화면 구석에 자동으로 그려짐, 위치는 Inspector에서 선택)
 // - 1층 씬의 빈 오브젝트에 붙이기 (씬이 바뀌어도 계속 따라다님)
 public class SceneJumpMenu : MonoBehaviour
 {
@@ -26,6 +26,12 @@ public class SceneJumpMenu : MonoBehaviour
     public bool fullHealOnJump = true;
     [Tooltip("체크하면 Unity 에디터에서만 작동 (완성본 게임에서는 안 열림)")]
     public bool editorOnly = false;
+
+    public enum Corner { TopLeft, TopRight, BottomLeft, BottomRight }
+    [Header("메뉴 위치 (하트와 겹치지 않게)")]
+    public Corner corner = Corner.TopRight;
+    [Tooltip("구석에서 얼마나 떨어뜨릴지 (가로, 세로)")]
+    public Vector2 margin = new Vector2(10, 10);
 
     private bool isOpen = false;
 
@@ -54,7 +60,17 @@ public class SceneJumpMenu : MonoBehaviour
         GUI.skin.box.fontSize = 18;
 
         int count = jumps != null ? jumps.Length : 0;
-        GUILayout.BeginArea(new Rect(10, 10, 260, 60 + count * 40));
+        float w = 260f;
+        float h = 60f + count * 40f;
+        float screenW = Screen.width / scale;   // 크기 조절된 화면 기준 가로/세로
+        float screenH = Screen.height / scale;
+
+        bool right = corner == Corner.TopRight || corner == Corner.BottomRight;
+        bool bottom = corner == Corner.BottomLeft || corner == Corner.BottomRight;
+        float x = right ? screenW - w - margin.x : margin.x;
+        float y = bottom ? screenH - h - margin.y : margin.y;
+
+        GUILayout.BeginArea(new Rect(x, y, w, h));
         GUILayout.Box("씬 바로가기 (" + openKey + " 닫기)");
 
         for (int i = 0; i < count; i++)

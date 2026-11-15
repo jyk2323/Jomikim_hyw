@@ -129,6 +129,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7687413496611418282, guid: 95b074c9d001d0349b1b4ec09685f11d, type: 3}
   m_PrefabInstance: {fileID: 1989431963}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &790733686 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2051796968772968579, guid: 95b074c9d001d0349b1b4ec09685f11d, type: 3}
+  m_PrefabInstance: {fileID: 1989431963}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &911513286 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6326371718895887719, guid: 85d11d08c3ddd41a9a05b3c1f460780a, type: 3}
@@ -177,8 +188,11 @@ MonoBehaviour:
   cutsceneData: {fileID: 0}
   cuts:
   - image: {fileID: -4017808141807451601, guid: 7fb781f7a7d3e485c9c8229c4acc35b5, type: 3}
-    lines: []
-    autoNextTime: 0
+    lines:
+    - "[\uCE74\uB9B0] \uD6C4 \uC774\uC81C \uC815\uB9D0 \uB05D\uC774\uAD6C\uB098..."
+    autoNextTime: 2.5
+    sound: {fileID: 8300000, guid: f07cc9e5d6295b44da863f442b01c812, type: 3}
+    soundDelay: 0.3
   - image: {fileID: 6907163277538366138, guid: 4d4ce32eff7bb49e3ae6648c281c72c3, type: 3}
     lines:
     - "[\uB274\uC2A4] \uC18D\uBCF4\uC785\uB2C8\uB2E4.  "
@@ -193,13 +207,15 @@ MonoBehaviour:
       \uC624\uB79C \uC5B4\uB460\uC744 \uC9C0\uB098 \uD3C9\uD654\uB85C\uC6B4 \uC544\uCE68\uC744
       \uB9DE\uC774\uD558\uACE0 \uC788\uC2B5\uB2C8\uB2E4."
     autoNextTime: 0
+    sound: {fileID: 0}
+    soundDelay: 0.3
   cutImage: {fileID: 1478729777}
   dialoguePanel: {fileID: 666036245}
   nameText: {fileID: 1263498776}
   dialogueText: {fileID: 1936096362}
   fadeImage: {fileID: 1591512722}
   skipButtonObj: {fileID: 911513286}
-  characterImage: {fileID: 0}
+  characterImage: {fileID: 790733686}
   speakers:
   - name: "\uCE74\uB9B0"
     portrait: {fileID: 609192213627623470, guid: e4668336f3ed810448c07262ee823535, type: 3}
@@ -208,7 +224,7 @@ MonoBehaviour:
   - name: "\uB808\uC778"
     portrait: {fileID: -3978272887453804091, guid: c0c8b4e85e3685d49a6ccb2e66f171df, type: 3}
   typingSpeed: 0.08
-  fadeTime: 1
+  fadeTime: 2
   nextSceneName: Start
   typingSound: {fileID: 8300000, guid: d762dd4b87dfd744da1464b557d080e2, type: 3}
   soundMode: 0
@@ -625,7 +641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5332210680338170752, guid: 95b074c9d001d0349b1b4ec09685f11d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6165638283589884964, guid: 95b074c9d001d0349b1b4ec09685f11d, type: 3}
       propertyPath: m_Name

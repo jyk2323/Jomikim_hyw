@@ -233,7 +233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 809, y: 392}
+  m_AnchoredPosition: {x: 848, y: 442}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37734542
@@ -378,6 +378,9 @@ MonoBehaviour:
   healItemName: "\uD68C\uBCF5\uC57D"
   healHearts: 3
   fullHpMessage: "\uCCB4\uB825\uC774 \uC774\uBBF8 \uAC00\uB4DD \uCC3C\uC5B4\uC694"
+  openSound: {fileID: 8300000, guid: b3018a9601d3cae4ead6a1e7d488427c, type: 3}
+  closeSound: {fileID: 8300000, guid: b3018a9601d3cae4ead6a1e7d488427c, type: 3}
+  bagVolume: 1
 --- !u!114 &41873680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6984,8 +6987,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -290115369
-  m_SortingLayer: 1
+  m_SortingLayerID: 1194639307
+  m_SortingLayer: 3
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6259133672781337941, guid: de1da3270b3f8b149a3ac5b477005f5d, type: 3}
@@ -7071,6 +7074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3300fe78a32234d48aa87cae23b8c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingOrder
+  childOffset: -1
 --- !u!4 &634078070 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8311689205936438559, guid: 3fa816640497407469dee1b581ea106f, type: 3}
@@ -8747,8 +8751,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1194639307
+  m_SortingLayer: 3
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2145367916, guid: de1da3270b3f8b149a3ac5b477005f5d, type: 3}
@@ -10256,6 +10260,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   jumps:
+  - buttonName: "\uACBD\uBE44\uC2E4"
+    sceneName: 2F_Guardroom
+    spawnPoint: {x: -1.99, y: 1.76}
+  - buttonName: "\uC2E4\uD5D8\uC2E4"
+    sceneName: 2F_Lab
+    spawnPoint: {x: -9.73, y: -1.72}
   - buttonName: "\uAC04\uBD80\uC2E4"
     sceneName: 2F_Ceo_room
     spawnPoint: {x: 8.52, y: 6.85}
@@ -10268,12 +10278,11 @@ MonoBehaviour:
   - buttonName: "\uC9C0\uD558 "
     sceneName: B1_Scene
     spawnPoint: {x: -11.61, y: 5.25}
-  - buttonName: "\uACBD\uBE44\uC2E4"
-    sceneName: 2F_Guardroom
-    spawnPoint: {x: -1.99, y: 1.76}
   openKey: 94
   fullHealOnJump: 1
   editorOnly: 0
+  corner: 0
+  margin: {x: 20, y: 60}
 --- !u!4 &1308574532
 Transform:
   m_ObjectHideFlags: 0
@@ -11652,7 +11661,7 @@ TilemapCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1.7}
+  m_Offset: {x: 0, y: 1.6}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
@@ -12810,6 +12819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3300fe78a32234d48aa87cae23b8c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingOrder
+  childOffset: -1
 --- !u!1 &1607621060
 GameObject:
   m_ObjectHideFlags: 0
@@ -15371,6 +15381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3300fe78a32234d48aa87cae23b8c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingOrder
+  childOffset: -1
 --- !u!61 &2026265155
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15977,6 +15988,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 709443943035172314, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 08c62dd7d1dd1c541b842d1e2c0320ca, type: 2}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: stepInterval
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: footstepVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: footstepPitchRandom
+      value: 0.116
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: footstepSounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: 'footstepSounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a8572aaa17f91e0419fb90cdf549bd10, type: 3}
+    - target: {fileID: 1707088293866044363, guid: 3fa816640497407469dee1b581ea106f, type: 3}
+      propertyPath: 'footstepSounds.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a8572aaa17f91e0419fb90cdf549bd10, type: 3}
     - target: {fileID: 1905422076585043558, guid: 3fa816640497407469dee1b581ea106f, type: 3}
       propertyPath: m_Name
       value: KARIN

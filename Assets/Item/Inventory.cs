@@ -43,6 +43,13 @@ public class Inventory : MonoBehaviour
     private CanvasGroup noticeGroup;
     private Coroutine noticeRoutine;
 
+    [Header("가방 여닫기 효과음 (볼륨은 시작화면 효과음 슬라이더를 따름)")]
+    public AudioClip openSound;    // 열 때
+    [Tooltip("닫을 때 소리 (비우면 닫을 때는 소리 없음)")]
+    public AudioClip closeSound;   // 닫을 때
+    [Range(0f, 1f)] public float bagVolume = 1f;
+    private AudioSource sfxAudio;
+
     void Awake()
     {
         if (instance != null)
@@ -53,6 +60,10 @@ public class Inventory : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         inventoryPanel.SetActive(false);
+
+        // 효과음 전용 스피커
+        sfxAudio = gameObject.AddComponent<AudioSource>();
+        sfxAudio.playOnAwake = false;
 
         if (noticePanel != null)
         {
@@ -70,13 +81,21 @@ public class Inventory : MonoBehaviour
     {
         bool isOpen = inventoryPanel.activeSelf;
         inventoryPanel.SetActive(!isOpen);
+        PlayBagSound(isOpen ? closeSound : openSound);   // 열면 여는 소리, 닫으면 닫는 소리
         ClearSelection(); // 열거나 닫을 때 "사용하기" 상태 풀기
     }
 
     public void CloseInventory()
     {
+        if (inventoryPanel.activeSelf) PlayBagSound(closeSound);   // 열려 있을 때만 닫는 소리
         inventoryPanel.SetActive(false);
         ClearSelection();
+    }
+
+    void PlayBagSound(AudioClip clip)
+    {
+        if (clip == null || sfxAudio == null) return;
+        sfxAudio.PlayOneShot(clip, bagVolume * AudioManager.SfxVolume);
     }
 
     // 아이템 획득 (Item.cs의 E키 줍기, 상자, 대사 후 자동획득 모두 여기로 옴)

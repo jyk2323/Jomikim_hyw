@@ -744,6 +744,9 @@ MonoBehaviour:
   - "[\uCE74\uB9B0] \uC5EC\uAE30 \uBB50\uAC00 \uB4E4\uC5B4\uC788\uB294 \uAC83 \uAC19\uC544 "
   emptyLines:
   - "[\uCE74\uB9B0] \uC774\uC81C \uBE44\uC5C8\uC5B4"
+  openSound: {fileID: 8300000, guid: 26ec7c9aac157794ea5dd79e06c0d852, type: 3}
+  closeSound: {fileID: 8300000, guid: 26ec7c9aac157794ea5dd79e06c0d852, type: 3}
+  boxVolume: 1
 --- !u!61 &638807019
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2516,8 +2519,8 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!61 &1597367127
-BoxCollider2D:
+--- !u!19719996 &1597367127
+TilemapCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2550,18 +2553,10 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.009394169, y: 4.519458}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 8.043712, y: 1.0235844}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 1.6}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
+  m_UseDelaunayMesh: 0
 --- !u!1 &1630154652
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,13 @@ public class BoxSearch : MonoBehaviour
     [TextArea] public string[] openLines;   // 팝업 열기 전에 할 대사 (비우면 바로 팝업)
     [TextArea] public string[] emptyLines;  // 다 가져간 뒤 조사했을 때 대사
 
+    [Header("상자 여닫기 효과음 (볼륨은 시작화면 효과음 슬라이더를 따름)")]
+    public AudioClip openSound;    // 상자 열 때
+    [Tooltip("닫을 때 소리 (비우면 닫을 때는 소리 없음)")]
+    public AudioClip closeSound;   // 상자 닫을 때
+    [Range(0f, 1f)] public float boxVolume = 1f;
+    private AudioSource sfxAudio;
+
     private bool playerNearby = false;
     private bool isOpen = false;
     private PlayerMove playerMove;
@@ -108,15 +115,28 @@ public class BoxSearch : MonoBehaviour
             CreateSlot(item);
 
         popupPanel.SetActive(true);
+        PlayBoxSound(openSound);   // 여는 소리
     }
 
     // 닫기 버튼 OnClick에 연결
     public void ClosePopup()
     {
+        if (isOpen) PlayBoxSound(closeSound);   // 열려 있을 때만 닫는 소리
         isOpen = false;
         popupPanel.SetActive(false);
         SetPlayerMove(true);
         ShowButtonAgain();
+    }
+
+    void PlayBoxSound(AudioClip clip)
+    {
+        if (clip == null) return;
+        if (sfxAudio == null)
+        {
+            sfxAudio = gameObject.AddComponent<AudioSource>();
+            sfxAudio.playOnAwake = false;
+        }
+        sfxAudio.PlayOneShot(clip, boxVolume * AudioManager.SfxVolume);
     }
 
     void CreateSlot(BoxItem item)

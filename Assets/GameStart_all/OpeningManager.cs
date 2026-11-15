@@ -45,6 +45,7 @@ public class OpeningManager : MonoBehaviour
     public int soundEveryChars = 2;
     [Range(0f, 0.3f)] public float pitchRandom = 0.05f;
     private AudioSource typingAudio;
+    private AudioSource cutAudio;   // ← 추가: 컷 효과음(폭발음 등) 전용
 
     private bool isTyping = false;
     private bool nextPressed = false;
@@ -76,7 +77,9 @@ public class OpeningManager : MonoBehaviour
             {
                 image = cuts[i].image,
                 lines = cuts[i].lines != null ? (string[])cuts[i].lines.Clone() : null,
-                autoNextTime = cuts[i].autoNextTime
+                autoNextTime = cuts[i].autoNextTime,
+                sound = cuts[i].sound,             // ← 추가
+                soundDelay = cuts[i].soundDelay    // ← 추가
             };
         }
         cutsceneData.cuts = copy;
@@ -92,6 +95,10 @@ public class OpeningManager : MonoBehaviour
         typingAudio = GetComponent<AudioSource>();
         if (typingAudio == null) typingAudio = gameObject.AddComponent<AudioSource>();
         typingAudio.playOnAwake = false;
+
+        // ← 추가: 컷 효과음용 AudioSource (타이핑 소리를 멈춰도 같이 꺼지지 않게 따로)
+        cutAudio = gameObject.AddComponent<AudioSource>();
+        cutAudio.playOnAwake = false;
 
         dialoguePanel.SetActive(false);
         if (skipButtonObj != null) skipButtonObj.SetActive(false);   // ← 추가
@@ -136,6 +143,15 @@ public class OpeningManager : MonoBehaviour
         isTyping = false;
         nextPressed = true;
         StopTypingSound();   // ← 추가
+        if (cutAudio != null) cutAudio.Stop();   // ← 추가: 컷 효과음도 정지
+    }
+
+    // ← 추가: 컷이 나올 때 효과음 재생 (볼륨은 시작화면 효과음 슬라이더를 따름)
+    IEnumerator PlayCutSound(AudioClip clip, float delay)
+    {
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+        if (isEnding || cutAudio == null) yield break;
+        cutAudio.PlayOneShot(clip, AudioManager.SfxVolume);
     }
 
     IEnumerator PlayOpening()
@@ -150,6 +166,7 @@ public class OpeningManager : MonoBehaviour
             dialoguePanel.SetActive(false);
             if (skipButtonObj != null) skipButtonObj.SetActive(false);   // ← 추가
             if (cutImage != null) cutImage.sprite = cut.image;
+            if (cut.sound != null) StartCoroutine(PlayCutSound(cut.sound, cut.soundDelay));   // ← 추가: 컷 효과음
             yield return Fade(1f, 0f);
 
             if (cut.lines == null || cut.lines.Length == 0)
